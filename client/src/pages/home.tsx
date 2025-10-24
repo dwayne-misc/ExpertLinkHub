@@ -9,16 +9,6 @@ import { useDebounce } from "@/hooks/useDebounce";
 import type { Expert } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
-const CATEGORIES = [
-  "Accounting / Tax",
-  "Benefits / 401k",
-  "Business Consulting",
-  "Financial Planner",
-  "Insurance / Protection",
-  "Legal",
-  "Wealth Management / AUM",
-];
-
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -27,6 +17,11 @@ export default function Home() {
   const { data: experts = [], isLoading } = useQuery<Expert[]>({
     queryKey: ["/api/experts"],
   });
+
+  const availableCategories = useMemo(() => {
+    const categories = new Set(experts.map(expert => expert.category).filter(Boolean));
+    return Array.from(categories).sort();
+  }, [experts]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -113,14 +108,14 @@ export default function Home() {
               )}
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              {CATEGORIES.map((category) => (
+              {availableCategories.map((category) => (
                 <Button
                   key={category}
                   variant={selectedCategories.includes(category) ? "default" : "outline"}
                   size="sm"
                   onClick={() => toggleCategory(category)}
                   className="rounded-full"
-                  data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-")}`}
+                  data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
                 >
                   {category}
                 </Button>
