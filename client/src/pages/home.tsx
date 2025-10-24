@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebounce } from "@/hooks/useDebounce";
 import type { Expert } from "@shared/schema";
+import logoUrl from "@assets/vc_experts_logo.png";
 
 const CATEGORIES = [
   "Accounting / Tax",
@@ -60,24 +61,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-          <div className="flex items-center gap-3 mb-2">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-8 h-8 text-primary"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-foreground">ValuCompass</span>
-              <span className="text-2xl text-muted-foreground">|</span>
-              <span className="text-2xl font-normal text-muted-foreground">Experts</span>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
+          <div className="flex items-center justify-start">
+            <img 
+              src={logoUrl} 
+              alt="ValuCompass Experts" 
+              className="h-12"
+              data-testid="img-logo"
+            />
           </div>
         </div>
       </header>
