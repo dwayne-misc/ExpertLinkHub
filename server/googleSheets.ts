@@ -103,3 +103,16 @@ export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
     return [];
   }
 }
+
+export async function updateContentSheet(spreadsheetId: string, values: any[][]) {
+  const sheets = await getUncachableGoogleSheetClient();
+  
+  await sheets.spreadsheets.values.update({
+    spreadsheetId,
+    range: 'Content!A:F',
+    valueInputOption: 'RAW',
+    requestBody: {
+      values
+    }
+  });
+}
