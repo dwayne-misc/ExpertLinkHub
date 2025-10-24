@@ -18,9 +18,29 @@ export default function Home() {
     queryKey: ["/api/experts"],
   });
 
-  const availableCategories = useMemo(() => {
-    const categories = new Set(experts.map(expert => expert.category).filter(Boolean));
-    return Array.from(categories).sort();
+  const categoriesByGroup = useMemo(() => {
+    const groups: Record<string, string[]> = {
+      Growth: [],
+      Protection: []
+    };
+    
+    experts.forEach(expert => {
+      if (expert.category) {
+        const group = expert.group || 'Other';
+        if (!groups[group]) {
+          groups[group] = [];
+        }
+        if (!groups[group].includes(expert.category)) {
+          groups[group].push(expert.category);
+        }
+      }
+    });
+    
+    Object.keys(groups).forEach(group => {
+      groups[group].sort();
+    });
+    
+    return groups;
   }, [experts]);
 
   const toggleCategory = (category: string) => {
@@ -91,7 +111,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex items-center justify-center gap-4">
               <h2 className="text-center text-lg font-semibold text-foreground">
                 Filter by Category
@@ -107,20 +127,30 @@ export default function Home() {
                 </Button>
               )}
             </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              {availableCategories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategories.includes(category) ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleCategory(category)}
-                  className="rounded-full"
-                  data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
+            
+            {Object.entries(categoriesByGroup).map(([group, categories]) => 
+              categories.length > 0 && (
+                <div key={group} className="space-y-3">
+                  <h3 className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                    {group}
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {categories.map((category) => (
+                      <Button
+                        key={category}
+                        variant={selectedCategories.includes(category) ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleCategory(category)}
+                        className="rounded-full"
+                        data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
+                      >
+                        {category}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
 
