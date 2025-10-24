@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { ContentSection } from "@shared/schema";
 
 interface ContentBlockProps {
@@ -139,6 +140,52 @@ export function ContentBlock({ section }: ContentBlockProps) {
             <div className="text-muted-foreground whitespace-pre-wrap leading-relaxed" data-testid="text-image-text-content">
               {section.content}
             </div>
+          </div>
+        </div>
+      );
+
+    case "feature-cards":
+      const featureCards = section.content.split('\n\n').filter(Boolean);
+      return (
+        <div className="max-w-6xl mx-auto" data-testid="content-block-feature-cards">
+          {section.title && (
+            <h2 className="text-3xl font-bold text-primary mb-12 text-center" data-testid="text-feature-cards-title">
+              {section.title}
+            </h2>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featureCards.map((cardContent, idx) => {
+              const lines = cardContent.split('\n').filter(Boolean);
+              const imageUrl = lines[0]?.startsWith('http') ? lines[0] : '';
+              const cardTitle = imageUrl ? lines[1] : lines[0];
+              const cardDescription = imageUrl ? lines.slice(2).join('\n') : lines.slice(1).join('\n');
+              
+              return (
+                <div key={idx} className="flex flex-col" data-testid={`feature-card-${idx}`}>
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={cardTitle || `Feature ${idx + 1}`}
+                      className="w-full h-48 object-cover rounded-md mb-6"
+                      data-testid={`img-feature-card-${idx}`}
+                    />
+                  )}
+                  <h3 className="text-xl font-bold text-primary mb-4" data-testid={`text-feature-card-title-${idx}`}>
+                    {cardTitle}
+                  </h3>
+                  <p className="text-muted-foreground mb-6 flex-grow" data-testid={`text-feature-card-description-${idx}`}>
+                    {cardDescription}
+                  </p>
+                  <Button 
+                    variant="default" 
+                    className="w-fit"
+                    data-testid={`button-feature-card-${idx}`}
+                  >
+                    Learn more
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
