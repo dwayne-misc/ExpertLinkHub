@@ -71,3 +71,32 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     group: row[4] || '',
   })).filter(expert => expert.firstName && expert.email);
 }
+
+export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
+  try {
+    const sheets = await getUncachableGoogleSheetClient();
+    
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: 'Content!A:C',
+    });
+
+    const rows = response.data.values;
+    
+    if (!rows || rows.length === 0) {
+      return [];
+    }
+
+    const [header, ...dataRows] = rows;
+    
+    return dataRows.map((row, index) => ({
+      title: row[0] || '',
+      content: row[1] || '',
+      order: parseInt(row[2]) || index,
+    })).filter(section => section.title && section.content)
+      .sort((a, b) => a.order - b.order);
+  } catch (error) {
+    console.log('Content sheet not found, skipping content sections');
+    return [];
+  }
+}

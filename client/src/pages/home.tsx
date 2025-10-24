@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebounce } from "@/hooks/useDebounce";
-import type { Expert } from "@shared/schema";
+import type { Expert, ContentSection } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
 export default function Home() {
@@ -16,6 +16,10 @@ export default function Home() {
 
   const { data: experts = [], isLoading } = useQuery<Expert[]>({
     queryKey: ["/api/experts"],
+  });
+
+  const { data: contentSections = [] } = useQuery<ContentSection[]>({
+    queryKey: ["/api/content"],
   });
 
   const categoriesByGroup = useMemo(() => {
@@ -128,29 +132,31 @@ export default function Home() {
               )}
             </div>
             
-            {Object.entries(categoriesByGroup).map(([group, categories]) => 
-              categories.length > 0 && (
-                <div key={group} className="space-y-3">
-                  <h3 className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-                    {group}
-                  </h3>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {categories.map((category) => (
-                      <Button
-                        key={category}
-                        variant={selectedCategories.includes(category) ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => toggleCategory(category)}
-                        className="rounded-full"
-                        data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
-                      >
-                        {category}
-                      </Button>
-                    ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {Object.entries(categoriesByGroup).map(([group, categories]) => 
+                categories.length > 0 && (
+                  <div key={group} className="space-y-3">
+                    <h3 className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      {group}
+                    </h3>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {categories.map((category) => (
+                        <Button
+                          key={category}
+                          variant={selectedCategories.includes(category) ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => toggleCategory(category)}
+                          className="rounded-full"
+                          data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
+                        >
+                          {category}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
           </div>
         </div>
 
@@ -235,6 +241,21 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        )}
+
+        {contentSections.length > 0 && (
+          <div className="mt-16 border-t pt-16 space-y-12">
+            {contentSections.map((section, index) => (
+              <div key={index} className="max-w-3xl mx-auto">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
+                  {section.title}
+                </h2>
+                <div className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                  {section.content}
+                </div>
+              </div>
             ))}
           </div>
         )}

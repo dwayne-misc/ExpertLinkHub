@@ -1,11 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { fetchExpertsFromSheet } from "./googleSheets";
+import { fetchExpertsFromSheet, fetchContentSectionsFromSheet } from "./googleSheets";
 
 const SPREADSHEET_ID = "1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg";
 
 let expertsCacheTime = 0;
+let contentCacheTime = 0;
 const CACHE_DURATION = 5 * 60 * 1000;
 
 async function refreshExpertsCache() {
@@ -25,6 +26,20 @@ async function refreshExpertsCache() {
   }
 }
 
+async function refreshContentCache() {
+  const now = Date.now();
+  if (now - contentCacheTime > CACHE_DURATION) {
+    try {
+      const sections = await fetchContentSectionsFromSheet(SPREADSHEET_ID);
+      storage.setContentSections(sections);
+      contentCacheTime = now;
+      console.log(`Fetched ${sections.length} content sections from Google Sheets`);
+    } catch (error) {
+      console.error("Error fetching content sections:", error);
+    }
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/experts", async (req, res) => {
     try {
@@ -37,9 +52,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/content", async (req, res) => {
+    try {
+      await refreshContentCache();
+      const sections = await storage.getContentSections();
+      res.json(sections);
+    } catch (error) {
+      console.error("Error getting content sections:", error);
+      res.status(500).json({ error: "Failed to fetch content sections" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   setInterval(refreshExpertsCache, CACHE_DURATION);
+  setInterval(refreshContentCache, CACHE_DURATION);
 
   return httpServer;
 }
