@@ -78,7 +78,7 @@ export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
     
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'Content!A:C',
+      range: 'Content!A:F',
     });
 
     const rows = response.data.values;
@@ -93,7 +93,10 @@ export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
       title: row[0] || '',
       content: row[1] || '',
       order: parseInt(row[2]) || index,
-    })).filter(section => section.title && section.content)
+      type: row[3] || 'text',
+      imageUrl: row[4] || '',
+      secondaryContent: row[5] || '',
+    })).filter(section => section.title || section.content || section.imageUrl)
       .sort((a, b) => a.order - b.order);
   } catch (error) {
     console.log('Content sheet not found, skipping content sections');

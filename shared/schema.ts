@@ -12,6 +12,9 @@ export const contentSectionSchema = z.object({
   title: z.string(),
   content: z.string(),
   order: z.number(),
+  type: z.string().optional(),
+  imageUrl: z.string().optional(),
+  secondaryContent: z.string().optional(),
 });
 
 export type Expert = z.infer<typeof expertSchema>;

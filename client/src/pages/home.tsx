@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebounce } from "@/hooks/useDebounce";
+import { ContentBlock } from "@/components/ContentBlock";
 import type { Expert, ContentSection } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
@@ -246,16 +247,9 @@ export default function Home() {
         )}
 
         {contentSections.length > 0 && (
-          <div className="mt-16 border-t pt-16 space-y-12">
+          <div className="mt-16 border-t pt-16 space-y-16 pb-16">
             {contentSections.map((section, index) => (
-              <div key={index} className="max-w-3xl mx-auto">
-                <h2 className="text-2xl font-bold text-foreground mb-4">
-                  {section.title}
-                </h2>
-                <div className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
-                  {section.content}
-                </div>
-              </div>
+              <ContentBlock key={index} section={section} />
             ))}
           </div>
         )}

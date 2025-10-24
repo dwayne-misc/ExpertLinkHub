@@ -22,9 +22,11 @@ Preferred communication style: Simple, everyday language.
 **Design System**:
 - Card-based layout optimized for information density
 - Responsive grid system (1 column mobile, 2 columns tablet, 3 columns desktop)
+- Category filters displayed in side-by-side sections (Growth/Protection) on desktop, stacked on mobile
 - Inter font family for consistent typography
 - Custom color system using HSL with CSS variables for theming support
 - Spacing based on Tailwind's 2/4/6/8 unit system
+- Content block system with 6 widget types for rich content composition
 
 ### Backend Architecture
 
@@ -52,15 +54,39 @@ Preferred communication style: Simple, everyday language.
 - Automatic cache refresh on 5-minute intervals
 - Fallback to cached data if Google Sheets API fails
 
-**Data Schema**:
+**Expert Data Schema** (Sheet1!A:E):
 ```typescript
 {
   firstName: string
   lastName: string
   email: string (validated)
   category: string
+  group: string (Growth/Protection grouping)
 }
 ```
+
+**Content Management System**: Google Sheets-based block/widget system (Content!A:F)
+- **Content Schema**:
+```typescript
+{
+  title: string
+  content: string
+  order: number (controls display sequence)
+  type: string (widget type: text, image, hero, two-column, cards, image-text)
+  imageUrl: string (optional, for visual widgets)
+  secondaryContent: string (optional, for two-column layout)
+}
+```
+
+**Supported Widget Types**:
+1. **text**: Standard text content with optional title
+2. **image**: Full-width image with caption (title used as caption)
+3. **hero**: Large banner image (h-96) with overlaid title and content (dark gradient background)
+4. **two-column**: Side-by-side layout with content + secondaryContent (responsive, stacks on mobile)
+5. **cards**: Grid layout (3 cols desktop, 2 tablet, 1 mobile) - content split by double line breaks
+6. **image-text**: Image alongside text content in 2-column layout
+
+Content sections appear below expert listings, separated by divider, with 5-minute cache refresh.
 
 ### Authentication and Authorization
 
@@ -74,8 +100,10 @@ Currently implements read-only access with no user authentication. Authorization
 **Third-Party Services**:
 1. **Google Sheets API**: Primary data source
    - Spreadsheet ID: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`
+   - Sheet1!A:E: Expert directory data
+   - Content!A:F: Content management blocks/widgets
    - Requires OAuth2 credentials via Replit Connectors
-   - Rate-limited through caching strategy
+   - Rate-limited through 5-minute caching strategy for both datasets
 
 2. **Replit Platform Services**:
    - Connector API for Google Sheets authentication
