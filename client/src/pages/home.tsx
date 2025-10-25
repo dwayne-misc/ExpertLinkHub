@@ -131,8 +131,11 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-foreground mb-4">
             Expert Directory
           </h1>
+          <h2 className="text-2xl font-semibold text-foreground mb-4 max-w-3xl mx-auto">
+            Unlock the right expertise, right when you need it.
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Connect with our network of industry experts and professionals
+            ValuCompass Experts connects advisors to vetted specialists across tax, legal, finance, and transition planning so engagements stay moving.
           </p>
         </div>
 
