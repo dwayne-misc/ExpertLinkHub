@@ -8,6 +8,14 @@ This is an expert directory web application built to help users discover and con
 
 Preferred communication style: Simple, everyday language.
 
+## Brand Customization
+
+**ValuCompass Branding:**
+- Primary Color: #1F406F (deep blue - used for buttons, links, accents)
+- Primary Font: Montserrat (headings and body text)
+- Secondary Font: Lato (available for secondary content)
+- Logo: Sourced from https://discovervalucompass.github.io/experts/assets/images/vc_experts_logo.png
+
 ## System Architecture
 
 ### Frontend Architecture
@@ -23,10 +31,11 @@ Preferred communication style: Simple, everyday language.
 - Card-based layout optimized for information density
 - Responsive grid system (1 column mobile, 2 columns tablet, 3 columns desktop)
 - Category filters displayed in side-by-side sections (Growth/Protection) on desktop, stacked on mobile
-- Inter font family for consistent typography
+- Montserrat font family for primary typography (headings and body text)
+- Lato font family available for secondary content
 - Custom color system using HSL with CSS variables for theming support
 - Spacing based on Tailwind's 2/4/6/8 unit system
-- Content block system with 6 widget types for rich content composition
+- Content block system with 7 widget types for rich content composition
 
 ### Backend Architecture
 

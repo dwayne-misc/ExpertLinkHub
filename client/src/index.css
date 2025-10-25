@@ -48,7 +48,7 @@
 
   --popover-border: 220 13% 89%;
 
-  --primary: 215.25deg 56.34% 27.84%;
+  --primary: 215.25 56.34% 27.84%;
 
   --primary-foreground: 0 0% 98%;
 
@@ -69,15 +69,15 @@
   --destructive-foreground: 0 0% 98%;
 
   --input: 217 33% 70%;
-  --ring: 215.25deg 56.34% 27.84%;
-  --chart-1: 215.25deg 56.34% 27.84%;
+  --ring: 215.25 56.34% 27.84%;
+  --chart-1: 215.25 56.34% 27.84%;
   --chart-2: 142 76% 36%;
   --chart-3: 262 83% 58%;
   --chart-4: 41 96% 56%;
   --chart-5: 346 77% 50%;
 
   --font-sans: 'Montserrat', sans-serif;
-  --font-serif: Georgia, serif;
+  --font-serif: 'Lato', sans-serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem; /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 13% 9% / 0.05);
