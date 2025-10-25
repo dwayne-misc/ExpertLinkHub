@@ -31,6 +31,7 @@ Preferred communication style: Simple, everyday language.
 - Card-based layout optimized for information density
 - Responsive grid system (1 column mobile, 2 columns tablet, 3 columns desktop)
 - Category filters displayed in side-by-side sections (Growth/Protection) on desktop, stacked on mobile
+- Pagination system: 6 experts per page with smart page number display (ellipsis for 100+ pages)
 - Montserrat font family for primary typography (headings and body text)
 - Lato font family available for secondary content
 - Custom color system using HSL with CSS variables for theming support

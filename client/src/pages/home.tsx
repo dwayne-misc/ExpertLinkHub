@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, User, Mail } from "lucide-react";
+import { Search, User, Mail, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +10,12 @@ import { ContentBlock } from "@/components/ContentBlock";
 import type { Expert, ContentSection } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
+const EXPERTS_PER_PAGE = 6;
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   const { data: experts = [], isLoading } = useQuery<Expert[]>({
@@ -77,6 +80,36 @@ export default function Home() {
       return matchesSearch && matchesCategory;
     });
   }, [experts, debouncedSearchQuery, selectedCategories]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchQuery, selectedCategories]);
+
+  const totalPages = Math.ceil(filteredExperts.length / EXPERTS_PER_PAGE);
+  
+  const paginatedExperts = useMemo(() => {
+    const startIndex = (currentPage - 1) * EXPERTS_PER_PAGE;
+    const endIndex = startIndex + EXPERTS_PER_PAGE;
+    return filteredExperts.slice(startIndex, endIndex);
+  }, [filteredExperts, currentPage]);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    const pages: (number | 'ellipsis')[] = [1];
+    
+    if (currentPage <= 3) {
+      pages.push(2, 3, 4, 'ellipsis', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push('ellipsis', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push('ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages);
+    }
+    
+    return pages;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -163,7 +196,10 @@ export default function Home() {
 
         <div className="text-center mb-6">
           <p className="text-sm text-muted-foreground" data-testid="text-expert-count">
-            Showing {filteredExperts.length} of {experts.length} experts
+            {filteredExperts.length > 0 
+              ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
+              : `0 of ${experts.length} experts`
+            }
           </p>
         </div>
 
@@ -194,56 +230,102 @@ export default function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
-            {filteredExperts.map((expert, index) => (
-              <Card
-                key={index}
-                className="hover-elevate transition-all duration-200"
-                data-testid={`card-expert-${index}`}
-              >
-                <CardContent className="p-6">
-                  <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
-                      <User className="w-10 h-10 text-accent-foreground" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
-                        {expert.firstName} {expert.lastName}
-                      </h3>
-
-                      <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                        <Mail className="w-4 h-4" />
-                        <a
-                          href={`mailto:${expert.email}`}
-                          className="hover:text-primary transition-colors"
-                          data-testid={`link-email-${index}`}
-                        >
-                          {expert.email}
-                        </a>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
+              {paginatedExperts.map((expert, index) => (
+                <Card
+                  key={index}
+                  className="hover-elevate transition-all duration-200"
+                  data-testid={`card-expert-${index}`}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
+                        <User className="w-10 h-10 text-accent-foreground" />
                       </div>
+
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
+                          {expert.firstName} {expert.lastName}
+                        </h3>
+
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <Mail className="w-4 h-4" />
+                          <a
+                            href={`mailto:${expert.email}`}
+                            className="hover:text-primary transition-colors"
+                            data-testid={`link-email-${index}`}
+                          >
+                            {expert.email}
+                          </a>
+                        </div>
+                      </div>
+
+                      <Badge
+                        variant="secondary"
+                        className="rounded-full px-3 py-1"
+                        data-testid={`badge-category-${index}`}
+                      >
+                        {expert.category}
+                      </Badge>
+
+                      <Button
+                        className="w-full"
+                        asChild
+                        data-testid={`button-contact-${index}`}
+                      >
+                        <a href={`mailto:${expert.email}`}>Contact Expert</a>
+                      </Button>
                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-                    <Badge
-                      variant="secondary"
-                      className="rounded-full px-3 py-1"
-                      data-testid={`badge-category-${index}`}
-                    >
-                      {expert.category}
-                    </Badge>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pb-16" data-testid="pagination-controls">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  data-testid="button-prev-page"
+                  aria-label="Previous page"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
 
+                {getPageNumbers().map((pageNum, idx) => 
+                  pageNum === 'ellipsis' ? (
+                    <span key={`ellipsis-${idx}`} className="px-2 text-muted-foreground">
+                      ...
+                    </span>
+                  ) : (
                     <Button
-                      className="w-full"
-                      asChild
-                      data-testid={`button-contact-${index}`}
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      size="icon"
+                      onClick={() => setCurrentPage(pageNum)}
+                      data-testid={`button-page-${pageNum}`}
                     >
-                      <a href={`mailto:${expert.email}`}>Contact Expert</a>
+                      {pageNum}
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  )
+                )}
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  data-testid="button-next-page"
+                  aria-label="Next page"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </>
         )}
 
         {contentSections.length > 0 && (
