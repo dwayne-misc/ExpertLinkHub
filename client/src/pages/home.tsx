@@ -302,7 +302,7 @@ export default function Home() {
                       </Badge>
 
                       {expert.description && (
-                        <p className="text-sm text-muted-foreground text-center" data-testid={`text-description-${index}`}>
+                        <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap" data-testid={`text-description-${index}`}>
                           {expert.description}
                         </p>
                       )}
