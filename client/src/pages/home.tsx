@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, User, Mail, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Mail, ChevronLeft, ChevronRight, Copy } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ContentBlock } from "@/components/ContentBlock";
+import { useToast } from "@/hooks/use-toast";
 import type { Expert, ContentSection } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
@@ -17,6 +18,7 @@ export default function Home() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
+  const { toast } = useToast();
 
   const { data: experts = [], isLoading } = useQuery<Expert[]>({
     queryKey: ["/api/experts"],
@@ -113,6 +115,22 @@ export default function Home() {
     }
     
     return pages;
+  };
+
+  const copyEmailToClipboard = async (email: string, expertName: string) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      toast({
+        title: "Email copied!",
+        description: `${expertName}'s email has been copied to your clipboard.`,
+      });
+    } catch (err) {
+      toast({
+        title: "Failed to copy",
+        description: "Please try again or copy the email manually.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -216,7 +234,6 @@ export default function Home() {
               <Card key={i} className="animate-pulse">
                 <CardContent className="p-6">
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 rounded-full bg-muted" />
                     <div className="w-32 h-6 bg-muted rounded" />
                     <div className="w-48 h-4 bg-muted rounded" />
                     <div className="w-24 h-6 bg-muted rounded-full" />
@@ -247,10 +264,6 @@ export default function Home() {
                 >
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
-                        <User className="w-10 h-10 text-accent-foreground" />
-                      </div>
-
                       <div className="space-y-2">
                         <div className="space-y-1">
                           <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
@@ -291,10 +304,11 @@ export default function Home() {
 
                       <Button
                         className="w-full"
-                        asChild
-                        data-testid={`button-contact-${index}`}
+                        onClick={() => copyEmailToClipboard(expert.email, `${expert.firstName} ${expert.lastName}`)}
+                        data-testid={`button-copy-email-${index}`}
                       >
-                        <a href={`mailto:${expert.email}`}>Contact Expert</a>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy Email
                       </Button>
                     </div>
                   </CardContent>
