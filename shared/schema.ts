@@ -9,6 +9,7 @@ export const expertSchema = z.object({
   state: z.string().optional(),
   category: z.string(),
   group: z.string().optional(),
+  description: z.string().optional(),
 });
 
 export const contentSectionSchema = z.object({
