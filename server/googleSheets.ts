@@ -52,7 +52,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range: 'Sheet1!A:E',
+    range: 'Experts!A:E',
   });
 
   const rows = response.data.values;
