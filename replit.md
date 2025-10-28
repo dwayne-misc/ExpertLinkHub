@@ -64,14 +64,17 @@ Preferred communication style: Simple, everyday language.
 - Automatic cache refresh on 5-minute intervals
 - Fallback to cached data if Google Sheets API fails
 
-**Expert Data Schema** (Sheet1!A:E):
+**Expert Data Schema** (Experts!A:H):
 ```typescript
 {
   firstName: string
   lastName: string
+  credentials: string (optional, e.g., CPA, CFP)
   email: string (validated)
-  category: string
-  group: string (Growth/Protection grouping)
+  city: string (optional)
+  state: string (optional)
+  category: string (main filter categories, e.g., Tax, Legal)
+  group: string (TopLine field - Growth/Protection grouping)
 }
 ```
 
@@ -110,8 +113,8 @@ Currently implements read-only access with no user authentication. Authorization
 **Third-Party Services**:
 1. **Google Sheets API**: Primary data source
    - Spreadsheet ID: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`
-   - Sheet1!A:E: Expert directory data
-   - Content!A:F: Content management blocks/widgets
+   - Experts!A:H: Expert directory data (8 columns)
+   - Content!A:F: Content management blocks/widgets (6 columns)
    - Requires OAuth2 credentials via Replit Connectors
    - Rate-limited through 5-minute caching strategy for both datasets
 

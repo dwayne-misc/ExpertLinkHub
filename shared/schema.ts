@@ -3,7 +3,10 @@ import { z } from "zod";
 export const expertSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
+  credentials: z.string().optional(),
   email: z.string().email(),
+  city: z.string().optional(),
+  state: z.string().optional(),
   category: z.string(),
   group: z.string().optional(),
 });

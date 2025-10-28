@@ -66,12 +66,16 @@ export default function Home() {
 
   const filteredExperts = useMemo(() => {
     return experts.filter((expert) => {
+      const searchLower = debouncedSearchQuery.toLowerCase();
       const matchesSearch =
         debouncedSearchQuery === "" ||
-        expert.firstName.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        expert.lastName.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        expert.email.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        expert.category.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
+        expert.firstName.toLowerCase().includes(searchLower) ||
+        expert.lastName.toLowerCase().includes(searchLower) ||
+        expert.email.toLowerCase().includes(searchLower) ||
+        expert.category.toLowerCase().includes(searchLower) ||
+        (expert.credentials && expert.credentials.toLowerCase().includes(searchLower)) ||
+        (expert.city && expert.city.toLowerCase().includes(searchLower)) ||
+        (expert.state && expert.state.toLowerCase().includes(searchLower));
 
       const matchesCategory =
         selectedCategories.length === 0 ||
@@ -144,7 +148,7 @@ export default function Home() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search experts by name, email, or category..."
+              placeholder="Search experts by name, location, credentials, or category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 h-12 text-base"
@@ -248,9 +252,22 @@ export default function Home() {
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
-                          {expert.firstName} {expert.lastName}
-                        </h3>
+                        <div className="space-y-1">
+                          <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
+                            {expert.firstName} {expert.lastName}
+                          </h3>
+                          {expert.credentials && (
+                            <p className="text-sm text-muted-foreground font-medium" data-testid={`text-credentials-${index}`}>
+                              {expert.credentials}
+                            </p>
+                          )}
+                        </div>
+
+                        {(expert.city || expert.state) && (
+                          <p className="text-sm text-muted-foreground" data-testid={`text-location-${index}`}>
+                            {[expert.city, expert.state].filter(Boolean).join(', ')}
+                          </p>
+                        )}
 
                         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                           <Mail className="w-4 h-4" />
