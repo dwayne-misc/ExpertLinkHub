@@ -265,16 +265,14 @@ export default function Home() {
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">
                       <div className="space-y-2">
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
-                            {expert.firstName} {expert.lastName}
-                          </h3>
+                        <h3 className="text-lg font-semibold text-foreground" data-testid={`text-name-${index}`}>
+                          {expert.firstName} {expert.lastName}
                           {expert.credentials && (
-                            <p className="text-sm text-muted-foreground font-medium" data-testid={`text-credentials-${index}`}>
-                              {expert.credentials}
-                            </p>
+                            <span className="text-sm text-muted-foreground font-medium" data-testid={`text-credentials-${index}`}>
+                              , {expert.credentials}
+                            </span>
                           )}
-                        </div>
+                        </h3>
 
                         {(expert.city || expert.state) && (
                           <p className="text-sm text-muted-foreground" data-testid={`text-location-${index}`}>
