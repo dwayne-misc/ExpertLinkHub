@@ -90,6 +90,43 @@ The project is configured in `vercel.json`:
 
 ## Troubleshooting
 
+### Step 1: Run the Diagnostic Endpoint
+
+Visit `https://your-project.vercel.app/api/debug` to see a detailed diagnostic report. This will tell you:
+- ✅ If environment variables are set correctly
+- ✅ If the Google Service Account credentials are valid
+- ✅ If the service account can access the spreadsheet
+- ✅ How many expert rows were found
+
+**Common Issues Found by Diagnostics:**
+
+**Problem**: `GOOGLE_SERVICE_ACCOUNT_JSON environment variable is not set`
+- **Solution**: Add the environment variable in Vercel dashboard → Settings → Environment Variables
+
+**Problem**: `Invalid JSON in GOOGLE_SERVICE_ACCOUNT_JSON`
+- **Solution**: Make sure the JSON is on a single line with no line breaks
+  ```bash
+  cat your-service-account.json | tr -d '\n'
+  ```
+
+**Problem**: `The caller does not have permission`
+- **Solution**: Share the Google Sheet with the service account email (shown in diagnostics)
+  1. Open your Google Sheet
+  2. Click "Share"
+  3. Add the service account email (e.g., `name@project.iam.gserviceaccount.com`)
+  4. Grant "Viewer" access
+
+**Problem**: `Requested entity was not found`
+- **Solution**: Check that `SPREADSHEET_ID` matches your Google Sheet URL
+
+### Step 2: Check Function Logs
+
+If diagnostics pass but data still doesn't load:
+
+1. Go to Vercel dashboard → Your project → Logs
+2. Look for errors in `/api/experts` or `/api/content`
+3. Check for detailed error messages in the logs
+
 ### Build Fails
 
 - Check that all environment variables are set correctly
