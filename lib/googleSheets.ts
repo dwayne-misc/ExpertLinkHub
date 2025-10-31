@@ -31,22 +31,23 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
 
   const [header, ...dataRows] = rows;
   
-  return dataRows.map(row => ({
-    firstName: row[0] || '',
-    lastName: row[1] || '',
-    credentials: row[2] || '',
-    email: row[3] || '',
-    city: row[4] || '',
-    state: row[5] || '',
-    category: row[6] || '',
-    group: row[7] || '',
-    specialty: row[8] || '',
-    isPublished: row[9] || '',
-  })).filter(expert => 
-    expert.firstName && 
-    expert.email && 
-    expert.isPublished?.toLowerCase() === 'yes'
-  );
+  return dataRows
+    .filter(row => {
+      const isPublished = (row[9] || '').toLowerCase() === 'yes';
+      const hasRequiredFields = row[0] && row[3];
+      return hasRequiredFields && isPublished;
+    })
+    .map(row => ({
+      firstName: row[0] || '',
+      lastName: row[1] || '',
+      credentials: row[2] || '',
+      email: row[3] || '',
+      city: row[4] || '',
+      state: row[5] || '',
+      category: row[6] || '',
+      group: row[7] || '',
+      specialty: row[8] || '',
+    }));
 }
 
 export async function fetchContentSectionsFromSheet(spreadsheetId: string) {

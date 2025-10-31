@@ -2,6 +2,15 @@
 
 This guide will help you deploy the ValuCompass Expert Directory to Vercel.
 
+## Architecture Overview
+
+The application is configured for Vercel's serverless platform:
+- **Frontend**: Static files built with Vite, served from `dist/public`
+- **API Routes**: Serverless functions in `api/` directory
+  - `/api/experts` - Fetches expert data from Google Sheets
+  - `/api/content` - Fetches content sections from Google Sheets
+- **Data Caching**: Vercel's edge caching with 5-minute revalidation
+
 ## Prerequisites
 
 1. A [Vercel account](https://vercel.com)
@@ -70,13 +79,14 @@ Make sure your Google Sheet is shared with the service account email:
 
 ## Build Configuration
 
-The project uses these build commands (already configured in `package.json`):
+The project is configured in `vercel.json`:
 
 - **Build Command**: `npm run build`
-  - Builds the frontend with Vite
-  - Bundles the backend with esbuild
-- **Output Directory**: `dist`
+  - Builds the frontend with Vite to `dist/public`
+  - Bundles serverless functions from `api/` directory
+- **Output Directory**: `dist/public` (static frontend files)
 - **Install Command**: `npm install`
+- **API Routes**: Automatically deployed from `api/` directory as serverless functions
 
 ## Troubleshooting
 
