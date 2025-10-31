@@ -63,7 +63,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range: 'Experts!A:I',
+    range: 'Experts!A:J',
   });
 
   const rows = response.data.values;
@@ -84,7 +84,12 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     category: row[6] || '',
     group: row[7] || '',
     specialty: row[8] || '',
-  })).filter(expert => expert.firstName && expert.email);
+    isPublished: row[9] || '',
+  })).filter(expert => 
+    expert.firstName && 
+    expert.email && 
+    expert.isPublished?.toLowerCase() === 'yes'
+  );
 }
 
 export async function fetchContentSectionsFromSheet(spreadsheetId: string) {

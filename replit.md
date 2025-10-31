@@ -64,7 +64,7 @@ Preferred communication style: Simple, everyday language.
 - Automatic cache refresh on 5-minute intervals
 - Fallback to cached data if Google Sheets API fails
 
-**Expert Data Schema** (Experts!A:I):
+**Expert Data Schema** (Experts!A:J):
 ```typescript
 {
   firstName: string
@@ -76,6 +76,7 @@ Preferred communication style: Simple, everyday language.
   category: string (main filter categories, e.g., Tax, Legal)
   group: string (TopLine field - Growth/Protection grouping)
   specialty: string (optional, expert specialty/focus area)
+  isPublished: string (optional, "Yes" to show, "No" or empty to hide)
 }
 ```
 
@@ -185,6 +186,9 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-10-31**: Added IsPublished column (Column J) - experts only display when set to "Yes"
+- **2025-10-31**: Uniform card heights with reserved specialty area (3rem) for consistent layout
+- **2025-10-31**: Refined diagonal ribbon design with overflow effect and smaller 9px font
 - **2025-10-31**: Replaced "Description" field with "Specialty" field for expert profiles
 - **2025-10-31**: Added Expert Categories reference tab documentation (Categories!A:B)
 - **2025-10-31**: Added support for line breaks in specialty text using `whitespace-pre-wrap` CSS

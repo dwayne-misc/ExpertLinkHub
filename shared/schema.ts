@@ -10,6 +10,7 @@ export const expertSchema = z.object({
   category: z.string(),
   group: z.string().optional(),
   specialty: z.string().optional(),
+  isPublished: z.string().optional(),
 });
 
 export const contentSectionSchema = z.object({
