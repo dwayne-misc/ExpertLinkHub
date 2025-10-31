@@ -198,3 +198,5 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
   - Fixes DNS_HOSTNAME_NOT_FOUND errors in serverless environment
   - Reduces bundle size and improves cold start performance
   - Uses direct Google Sheets REST API with JWT authentication
+  - Inlined authentication logic directly in API endpoints to avoid module resolution issues
+  - Successfully deployed to Vercel with Google Service Account authentication

@@ -90,24 +90,34 @@ The project is configured in `vercel.json`:
 
 ## Troubleshooting
 
-### Step 1: Run the Diagnostic Endpoint
+### Step 1: Verify Environment Variables
 
-Visit `https://your-project.vercel.app/api/debug` to see a detailed diagnostic report. This will tell you:
-- ✅ If environment variables are set correctly
-- ✅ If the Google Service Account credentials are valid
-- ✅ If the service account can access the spreadsheet
-- ✅ How many expert rows were found
+Ensure these are set in Vercel Dashboard → Settings → Environment Variables:
+- `GOOGLE_SERVICE_ACCOUNT_JSON` - Your service account JSON as a **single-line** string
+- `SPREADSHEET_ID` - Your Google Sheets ID (default: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`)
 
 **Common Issues Found by Diagnostics:**
 
 **Problem**: `GOOGLE_SERVICE_ACCOUNT_JSON environment variable is not set`
 - **Solution**: Add the environment variable in Vercel dashboard → Settings → Environment Variables
 
-**Problem**: `Invalid JSON in GOOGLE_SERVICE_ACCOUNT_JSON`
-- **Solution**: Make sure the JSON is on a single line with no line breaks
+**Problem**: `Invalid JSON in GOOGLE_SERVICE_ACCOUNT_JSON` or "Unterminated string in JSON"
+- **Solution**: Make sure the JSON is on a **single line** with no line breaks
   ```bash
+  # Option 1: Using jq (recommended)
+  cat your-service-account.json | jq -c
+  
+  # Option 2: Remove newlines
   cat your-service-account.json | tr -d '\n'
   ```
+- Then copy the output and paste into Vercel environment variable
+
+**Problem**: `Google Sheets API has not been used in project ... or it is disabled`
+- **Solution**: Enable the Google Sheets API for your service account's project
+  1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/library/sheets.googleapis.com)
+  2. Select your project
+  3. Click "Enable API"
+  4. Wait 2-3 minutes for propagation
 
 **Problem**: `The caller does not have permission`
 - **Solution**: Share the Google Sheet with the service account email (shown in diagnostics)
