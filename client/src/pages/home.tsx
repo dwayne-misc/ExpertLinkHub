@@ -232,7 +232,7 @@ export default function Home() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
+              <Card key={i} className="animate-pulse relative overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-32 h-6 bg-muted rounded" />
@@ -260,9 +260,24 @@ export default function Home() {
               {paginatedExperts.map((expert, index) => (
                 <Card
                   key={index}
-                  className="hover-elevate transition-all duration-200"
+                  className="hover-elevate transition-all duration-200 relative overflow-hidden"
                   data-testid={`card-expert-${index}`}
                 >
+                  {expert.group && (
+                    <div 
+                      className={`absolute top-0 right-0 px-8 py-1 text-xs font-bold tracking-wider transform rotate-45 origin-top-right translate-x-7 translate-y-4 ${
+                        expert.group === 'Growth' 
+                          ? 'bg-emerald-500/90 text-white' 
+                          : 'bg-blue-500/90 text-white'
+                      }`}
+                      style={{
+                        fontFamily: 'Montserrat, sans-serif',
+                      }}
+                      data-testid={`label-group-${index}`}
+                    >
+                      {expert.group.toUpperCase()}
+                    </div>
+                  )}
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">
                       <div className="space-y-2">
