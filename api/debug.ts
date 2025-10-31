@@ -37,10 +37,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
+      diagnostics.tests.authSetup = {
+        status: 'TESTING',
+        message: 'Creating Google Sheets client...'
+      };
+      
       const sheets = await getGoogleSheetsClient();
       diagnostics.tests.sheetsClient = {
         status: 'PASSED',
-        message: 'Google Sheets client created successfully'
+        message: 'Google Sheets client created and authorized successfully'
       };
 
       try {

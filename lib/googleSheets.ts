@@ -7,12 +7,18 @@ export async function getGoogleSheetsClient() {
 
   const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+  // Create JWT client directly instead of using GoogleAuth
+  // This avoids metadata server lookups that fail in Vercel
+  const jwtClient = new google.auth.JWT({
+    email: credentials.client_email,
+    key: credentials.private_key,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
-  return google.sheets({ version: 'v4', auth });
+  // Ensure the client is authorized before use
+  await jwtClient.authorize();
+
+  return google.sheets({ version: 'v4', auth: jwtClient });
 }
 
 export async function fetchExpertsFromSheet(spreadsheetId: string) {
