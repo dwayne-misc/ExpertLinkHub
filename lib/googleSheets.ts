@@ -5,6 +5,8 @@ interface GoogleJWTCredentials {
 }
 
 async function getAccessToken(credentials: GoogleJWTCredentials): Promise<string> {
+  console.log('[JWT] Starting JWT creation for', credentials.client_email);
+  
   const jwtHeader = {
     alg: 'RS256',
     typ: 'JWT'
@@ -30,6 +32,7 @@ async function getAccessToken(credentials: GoogleJWTCredentials): Promise<string
 
   const headerAndPayload = `${base64url(jwtHeader)}.${base64url(jwtClaimSet)}`;
 
+  console.log('[JWT] Creating signature...');
   // Sign with private key
   const crypto = await import('crypto');
   const sign = crypto.createSign('RSA-SHA256');
@@ -41,6 +44,7 @@ async function getAccessToken(credentials: GoogleJWTCredentials): Promise<string
 
   const jwt = `${headerAndPayload}.${signature}`;
 
+  console.log('[JWT] Exchanging JWT for access token...');
   // Exchange JWT for access token
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
@@ -53,27 +57,37 @@ async function getAccessToken(credentials: GoogleJWTCredentials): Promise<string
     })
   });
 
+  console.log('[JWT] Token exchange response status:', response.status);
+
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(`Failed to get access token: ${error}`);
+    console.error('[JWT] Token exchange failed:', error);
+    throw new Error(`Failed to get access token: ${response.status} ${error}`);
   }
 
   const data = await response.json();
+  console.log('[JWT] Successfully obtained access token');
   return data.access_token;
 }
 
 export async function fetchExpertsFromSheet(spreadsheetId: string) {
+  console.log('[Sheets] fetchExpertsFromSheet called for spreadsheet:', spreadsheetId);
+  
   if (!process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
     throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON environment variable is required');
   }
 
+  console.log('[Sheets] Parsing service account credentials...');
   const credentials: GoogleJWTCredentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  
+  console.log('[Sheets] Getting access token...');
   const accessToken = await getAccessToken(credentials);
 
   // Fetch data using Google Sheets REST API
   const range = 'Experts!A:J';
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`;
 
+  console.log('[Sheets] Fetching data from:', url);
   const response = await fetch(url, {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
@@ -81,8 +95,11 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     }
   });
 
+  console.log('[Sheets] Fetch response status:', response.status);
+
   if (!response.ok) {
     const error = await response.text();
+    console.error('[Sheets] Fetch failed:', error);
     throw new Error(`Failed to fetch from Google Sheets: ${response.status} ${error}`);
   }
 
