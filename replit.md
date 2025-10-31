@@ -75,9 +75,15 @@ Preferred communication style: Simple, everyday language.
   state: string (optional)
   category: string (main filter categories, e.g., Tax, Legal)
   group: string (TopLine field - Growth/Protection grouping)
-  description: string (optional, expert bio/description)
+  specialty: string (optional, expert specialty/focus area)
 }
 ```
+
+**Expert Categories Reference** (Expert Categories!A:B):
+- Optional reference tab listing available categories and specialties
+- Column A: Category name
+- Column B: Specialty options
+- Used for validation and reference when populating expert data
 
 **Content Management System**: Google Sheets-based block/widget system (Content!A:F)
 - **Content Schema**:

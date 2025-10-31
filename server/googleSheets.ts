@@ -131,3 +131,30 @@ export async function updateContentSheet(spreadsheetId: string, values: any[][])
     }
   });
 }
+
+export async function fetchExpertCategoriesFromSheet(spreadsheetId: string) {
+  try {
+    const sheets = await getUncachableGoogleSheetClient();
+    
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: 'Expert Categories!A:B',
+    });
+
+    const rows = response.data.values;
+    
+    if (!rows || rows.length === 0) {
+      return [];
+    }
+
+    const [header, ...dataRows] = rows;
+    
+    return dataRows.map(row => ({
+      category: row[0] || '',
+      specialty: row[1] || '',
+    })).filter(item => item.category || item.specialty);
+  } catch (error) {
+    console.log('Expert Categories sheet not found, skipping');
+    return [];
+  }
+}
