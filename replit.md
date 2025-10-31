@@ -194,3 +194,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 - **2025-10-31**: Added support for line breaks in specialty text using `whitespace-pre-wrap` CSS
 - **2025-10-31**: Dual authentication support (Replit Connectors + Google Service Account) for flexible deployment
 - **2025-10-31**: Added Vercel deployment configuration and documentation
+- **2025-10-31**: Replaced `googleapis` npm package with lightweight REST API calls for Vercel compatibility
+  - Fixes DNS_HOSTNAME_NOT_FOUND errors in serverless environment
+  - Reduces bundle size and improves cold start performance
+  - Uses direct Google Sheets REST API with JWT authentication

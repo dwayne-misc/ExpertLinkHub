@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getGoogleSheetsClient } from '../lib/googleSheets';
+import { fetchExpertsFromSheet } from '../lib/googleSheets';
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg';
 
@@ -39,52 +39,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       diagnostics.tests.authSetup = {
         status: 'TESTING',
-        message: 'Creating Google Sheets client...'
+        message: 'Authenticating with Google Sheets API...'
       };
       
-      const sheets = await getGoogleSheetsClient();
-      diagnostics.tests.sheetsClient = {
+      const experts = await fetchExpertsFromSheet(SPREADSHEET_ID);
+      
+      diagnostics.tests.sheetsAccess = {
         status: 'PASSED',
-        message: 'Google Sheets client created and authorized successfully'
+        message: 'Successfully accessed spreadsheet and fetched experts',
+        totalExperts: experts.length,
+        sampleExpert: experts[0] ? {
+          firstName: experts[0].firstName,
+          lastName: experts[0].lastName,
+          category: experts[0].category
+        } : null
       };
 
-      try {
-        const response = await sheets.spreadsheets.values.get({
-          spreadsheetId: SPREADSHEET_ID,
-          range: 'Experts!A1:J1',
-        });
-
-        diagnostics.tests.sheetsAccess = {
-          status: 'PASSED',
-          message: 'Successfully accessed spreadsheet',
-          headerRow: response.data.values?.[0] || []
-        };
-
-        const fullResponse = await sheets.spreadsheets.values.get({
-          spreadsheetId: SPREADSHEET_ID,
-          range: 'Experts!A:J',
-        });
-
-        const rowCount = (fullResponse.data.values?.length || 0) - 1;
-        diagnostics.tests.dataFetch = {
-          status: 'PASSED',
-          totalRows: rowCount,
-          message: `Found ${rowCount} expert rows (excluding header)`
-        };
-
-      } catch (e: any) {
-        diagnostics.tests.sheetsAccess = {
-          status: 'FAILED',
-          error: e.message,
-          code: e.code,
-          details: e.errors?.[0]?.message || 'No additional details'
-        };
-      }
-
     } catch (e: any) {
-      diagnostics.tests.sheetsClient = {
+      diagnostics.tests.sheetsAccess = {
         status: 'FAILED',
-        error: e.message
+        error: e.message,
+        stack: e.stack
       };
     }
 
