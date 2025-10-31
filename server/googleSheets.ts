@@ -83,7 +83,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     state: row[5] || '',
     category: row[6] || '',
     group: row[7] || '',
-    description: row[8] || '',
+    specialty: row[8] || '',
   })).filter(expert => expert.firstName && expert.email);
 }
 
