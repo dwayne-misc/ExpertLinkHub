@@ -321,11 +321,13 @@ export default function Home() {
                         {expert.category}
                       </Badge>
 
-                      {expert.specialty && (
-                        <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap" data-testid={`text-specialty-${index}`}>
-                          {expert.specialty}
-                        </p>
-                      )}
+                      <div className="min-h-[3rem] flex items-center justify-center">
+                        {expert.specialty && (
+                          <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap" data-testid={`text-specialty-${index}`}>
+                            {expert.specialty}
+                          </p>
+                        )}
+                      </div>
 
                       <Button
                         className="w-full"
