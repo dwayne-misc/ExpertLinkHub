@@ -269,10 +269,10 @@ export default function Home() {
                       data-testid={`label-group-container-${index}`}
                     >
                       <div 
-                        className={`absolute top-6 -right-8 w-40 text-center py-1 text-[9px] font-bold tracking-widest transform rotate-45 shadow-md ${
+                        className={`absolute top-6 w-40 text-center py-1 text-[9px] font-bold tracking-widest transform rotate-45 shadow-md ${
                           expert.group === 'Growth' 
-                            ? 'bg-emerald-500 text-white' 
-                            : 'bg-blue-500 text-white'
+                            ? 'bg-emerald-500 text-white -right-8' 
+                            : 'bg-blue-500 text-white -right-10'
                         }`}
                         style={{
                           fontFamily: 'Montserrat, sans-serif',
