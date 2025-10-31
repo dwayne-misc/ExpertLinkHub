@@ -265,13 +265,14 @@ export default function Home() {
                 >
                   {expert.group && (
                     <div 
-                      className={`absolute top-0 right-0 px-8 py-1 text-xs font-bold tracking-wider transform rotate-45 origin-top-right translate-x-7 translate-y-4 ${
+                      className={`absolute -top-1 -right-1 px-10 py-1.5 text-[10px] font-bold tracking-widest transform rotate-45 origin-center shadow-sm ${
                         expert.group === 'Growth' 
-                          ? 'bg-emerald-500/90 text-white' 
-                          : 'bg-blue-500/90 text-white'
+                          ? 'bg-emerald-500 text-white' 
+                          : 'bg-blue-500 text-white'
                       }`}
                       style={{
                         fontFamily: 'Montserrat, sans-serif',
+                        transform: 'rotate(45deg) translate(12px, -16px)',
                       }}
                       data-testid={`label-group-${index}`}
                     >
