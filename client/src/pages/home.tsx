@@ -265,18 +265,22 @@ export default function Home() {
                 >
                   {expert.group && (
                     <div 
-                      className={`absolute -top-1 -right-1 px-10 py-1.5 text-[10px] font-bold tracking-widest transform rotate-45 origin-center shadow-sm ${
-                        expert.group === 'Growth' 
-                          ? 'bg-emerald-500 text-white' 
-                          : 'bg-blue-500 text-white'
-                      }`}
-                      style={{
-                        fontFamily: 'Montserrat, sans-serif',
-                        transform: 'rotate(45deg) translate(12px, -16px)',
-                      }}
-                      data-testid={`label-group-${index}`}
+                      className={`absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none`}
+                      data-testid={`label-group-container-${index}`}
                     >
-                      {expert.group.toUpperCase()}
+                      <div 
+                        className={`absolute top-4 right-[-32px] w-40 text-center py-1 text-[9px] font-bold tracking-widest transform rotate-45 shadow-md ${
+                          expert.group === 'Growth' 
+                            ? 'bg-emerald-500 text-white' 
+                            : 'bg-blue-500 text-white'
+                        }`}
+                        style={{
+                          fontFamily: 'Montserrat, sans-serif',
+                        }}
+                        data-testid={`label-group-${index}`}
+                      >
+                        {expert.group.toUpperCase()}
+                      </div>
                     </div>
                   )}
                   <CardContent className="p-6">
