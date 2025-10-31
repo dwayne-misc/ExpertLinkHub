@@ -1,15 +1,10 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
-  "installCommand": "npm install",
-  "rewrites": [
-    {
-      "source": "/api/experts",
-      "destination": "/api/experts"
-    },
-    {
-      "source": "/api/content",
-      "destination": "/api/content"
+  "functions": {
+    "api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ]
+  }
 }
