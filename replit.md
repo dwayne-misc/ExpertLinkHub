@@ -185,6 +185,8 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
-- **2025-10-31**: Added support for line breaks in expert descriptions using `whitespace-pre-wrap` CSS
+- **2025-10-31**: Replaced "Description" field with "Specialty" field for expert profiles
+- **2025-10-31**: Added Expert Categories reference tab documentation (Categories!A:B)
+- **2025-10-31**: Added support for line breaks in specialty text using `whitespace-pre-wrap` CSS
 - **2025-10-31**: Dual authentication support (Replit Connectors + Google Service Account) for flexible deployment
 - **2025-10-31**: Added Vercel deployment configuration and documentation
