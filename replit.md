@@ -105,9 +105,17 @@ Content sections appear below expert listings, separated by divider, with 5-minu
 ### Authentication and Authorization
 
 Currently implements read-only access with no user authentication. Authorization is handled at the infrastructure level through:
+
+**Development (Replit)**:
 - Replit's identity tokens (REPL_IDENTITY for development, WEB_REPL_RENEWAL for deployment)
 - Google Sheets OAuth credentials managed via Replit Connectors
 - Connection settings cached to minimize auth overhead
+
+**Production (Vercel/External)**:
+- Google Service Account authentication
+- Service account JSON credentials stored in environment variable `GOOGLE_SERVICE_ACCOUNT_JSON`
+- Read-only access to Google Sheets with `spreadsheets.readonly` scope
+- Service account email must be granted Viewer access to the spreadsheet
 
 ### External Dependencies
 
@@ -141,3 +149,36 @@ Currently implements read-only access with no user authentication. Authorization
 - Drizzle ORM configured (PostgreSQL dialect) - note: database not currently in use but configured for future extension
 - ESBuild for fast production builds
 - TSX for TypeScript execution in development
+
+## Deployment
+
+The application supports deployment to multiple platforms with flexible authentication:
+
+### Vercel Deployment
+
+**Prerequisites**:
+- Google Service Account with JSON credentials
+- Service account email granted Viewer access to Google Sheet
+- Vercel account with connected Git repository
+
+**Environment Variables** (set in Vercel dashboard):
+- `GOOGLE_SERVICE_ACCOUNT_JSON`: Full service account JSON as single-line string
+- `SPREADSHEET_ID`: Google Sheets spreadsheet ID (default: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`)
+- `SESSION_SECRET`: Random secret for session management (optional)
+
+**Build Configuration**:
+- Build Command: `npm run build`
+- Output Directory: `dist`
+- Install Command: `npm install`
+
+See `DEPLOYMENT.md` for detailed deployment instructions.
+
+### Replit Deployment
+
+Uses Replit's built-in Google Sheets connector for authentication. No additional environment variables required beyond the connector setup.
+
+## Recent Changes
+
+- **2025-10-31**: Added support for line breaks in expert descriptions using `whitespace-pre-wrap` CSS
+- **2025-10-31**: Dual authentication support (Replit Connectors + Google Service Account) for flexible deployment
+- **2025-10-31**: Added Vercel deployment configuration and documentation
