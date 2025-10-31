@@ -78,7 +78,7 @@ export default function Home() {
         (expert.credentials && expert.credentials.toLowerCase().includes(searchLower)) ||
         (expert.city && expert.city.toLowerCase().includes(searchLower)) ||
         (expert.state && expert.state.toLowerCase().includes(searchLower)) ||
-        (expert.description && expert.description.toLowerCase().includes(searchLower));
+        (expert.specialty && expert.specialty.toLowerCase().includes(searchLower));
 
       const matchesCategory =
         selectedCategories.length === 0 ||
@@ -301,9 +301,9 @@ export default function Home() {
                         {expert.category}
                       </Badge>
 
-                      {expert.description && (
-                        <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap" data-testid={`text-description-${index}`}>
-                          {expert.description}
+                      {expert.specialty && (
+                        <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap" data-testid={`text-specialty-${index}`}>
+                          {expert.specialty}
                         </p>
                       )}
 
