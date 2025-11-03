@@ -76,16 +76,33 @@ This tab manages all content sections below the expert directory using a flexibl
 
 ---
 
-### 3. **Expert Categories Sheet** (Range: `Expert Categories!A:B`)
+### 3. **Expert Categories Sheet** (Range: `Expert Categories!A:C`)
 
-Optional reference tab for managing available categories and specialties.
+Reference tab that populates the registration form dropdowns.
 
-| Column | Field Name | Description |
-|--------|------------|-------------|
-| A | Category | Category name (matches Expert sheet Column G) |
-| B | Specialty | Common specialty options for that category |
+| Column | Field Name | Type | Description | Example |
+|--------|------------|------|-------------|---------|
+| A | Category | Text | Category name (matches Expert sheet Column G) | `Business Consulting` |
+| B | Specialty | Text | Specific expertise area within the category | `Strategic Planning` |
+| C | TopLine | Text | Growth or Protection grouping | `Growth` |
 
-**Purpose**: Documentation and validation reference - not directly consumed by the app.
+**Structure Example:**
+```
+Category              | Specialty              | TopLine
+Business Consulting   | Strategic Planning     | Growth
+Business Consulting   | Operations             | Growth
+Marketing             | Digital Marketing      | Growth
+Legal                 | Contract Law           | Protection
+Accounting / Tax      | Tax Planning           | Protection
+```
+
+**How It Works:**
+- Each category can have multiple rows (one per specialty)
+- The registration form groups specialties by category
+- TopLine is auto-assigned to new experts based on their selected category
+- Multiple rows with the same category name = multiple specialty options
+
+**Purpose**: Populates the registration form category dropdown and cascading specialty checkboxes.
 
 ---
 

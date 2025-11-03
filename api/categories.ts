@@ -95,6 +95,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (specialty) {
           categoryMap.get(category)!.specialties.add(specialty);
         }
+        if (topLine && !categoryMap.get(category)!.topLine) {
+          categoryMap.get(category)!.topLine = topLine;
+        }
       }
     });
 

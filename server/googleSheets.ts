@@ -191,6 +191,9 @@ export async function fetchExpertCategoriesFromSheet(spreadsheetId: string) {
         if (specialty) {
           categoryMap.get(category)!.specialties.add(specialty);
         }
+        if (topLine && !categoryMap.get(category)!.topLine) {
+          categoryMap.get(category)!.topLine = topLine;
+        }
       }
     });
 
