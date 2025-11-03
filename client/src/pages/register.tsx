@@ -67,6 +67,7 @@ export default function RegisterPage() {
     },
     onSuccess: () => {
       setSubmitted(true);
+      setSelectedCategory("");
       form.reset();
     },
   });

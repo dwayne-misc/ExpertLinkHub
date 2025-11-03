@@ -75,10 +75,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/submit-expert", async (req, res) => {
     try {
-      const { firstName, lastName, email, credentials, category, specialties, topLine } = req.body;
+      const { expertSubmissionSchema } = await import("@shared/schema");
+      
+      const validationResult = expertSubmissionSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Validation failed", 
+          details: validationResult.error.errors 
+        });
+      }
 
-      if (!firstName || !lastName || !email || !category || !specialties || !topLine) {
-        return res.status(400).json({ error: "Missing required fields" });
+      const { firstName, lastName, email, credentials, category, specialties } = validationResult.data;
+      const { topLine } = req.body;
+
+      if (!topLine) {
+        return res.status(400).json({ error: "TopLine is required" });
       }
 
       await appendExpertToSheet(SPREADSHEET_ID, {
@@ -87,14 +99,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email,
         credentials,
         category,
-        specialties: Array.isArray(specialties) ? specialties : [specialties],
+        specialties,
         topLine
       });
 
+      console.log(`Successfully added new expert: ${firstName} ${lastName} (${category})`);
       res.json({ success: true, message: "Expert submission successful" });
     } catch (error) {
       console.error("Error submitting expert:", error);
-      res.status(500).json({ error: "Failed to submit expert" });
+      res.status(500).json({ 
+        error: "Failed to submit expert",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 

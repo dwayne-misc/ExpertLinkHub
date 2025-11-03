@@ -186,6 +186,12 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-11-03**: Added expert registration form at /register route
+  - Cascading category and specialty dropdowns populated from Expert Categories sheet
+  - Server-side validation using Zod schemas
+  - Automatic TopLine assignment based on category
+  - New experts default to IsPublished="No" for review
+  - Thank you message on successful submission
 - **2025-11-01**: Created comprehensive README.md with complete field mappings and content type documentation
 - **2025-10-31**: Added IsPublished column (Column J) - experts only display when set to "Yes"
 - **2025-10-31**: Uniform card heights with reserved specialty area (3rem) for consistent layout

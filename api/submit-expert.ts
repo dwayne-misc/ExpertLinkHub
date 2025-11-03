@@ -57,10 +57,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { firstName, lastName, email, credentials, category, specialties, topLine } = req.body;
+    const { expertSubmissionSchema } = await import('../shared/schema');
+    
+    const validationResult = expertSubmissionSchema.safeParse(req.body);
+    
+    if (!validationResult.success) {
+      return res.status(400).json({ 
+        message: 'Validation failed', 
+        errors: validationResult.error.errors 
+      });
+    }
 
-    if (!firstName || !lastName || !email || !category || !specialties || !topLine) {
-      return res.status(400).json({ message: 'Missing required fields' });
+    const { firstName, lastName, email, credentials, category, specialties } = validationResult.data;
+    const { topLine } = req.body;
+
+    if (!topLine) {
+      return res.status(400).json({ message: 'TopLine is required' });
     }
 
     const accessToken = await getAccessToken();

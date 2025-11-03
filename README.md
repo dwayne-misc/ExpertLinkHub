@@ -9,6 +9,7 @@ A dynamic, single-page expert directory website that pulls data from Google Shee
 - **Search Functionality**: Real-time search across names, credentials, and specialties
 - **Pagination**: Clean pagination system (6 experts per page) with smart page number display
 - **Visual Categorization**: Diagonal ribbon design distinguishing Growth vs. Protection experts
+- **Expert Registration Form**: Self-service registration at `/register` with cascading dropdowns
 - **Flexible CMS**: Contentful-style block system for managing page content directly in Google Sheets
 - **Auto-Refresh**: 5-minute cache with automatic updates when spreadsheet changes
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
@@ -318,7 +319,23 @@ For detailed troubleshooting, see [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ## 📝 How to Update Content
 
-### Adding a New Expert
+### Expert Registration Form
+
+The easiest way for new experts to join the directory is through the self-service registration form at `/register`:
+
+1. Navigate to `https://your-domain.com/register`
+2. Fill out the form:
+   - **Personal Information**: First name, last name, email
+   - **Credentials**: Optional (CPA, CFP, JD, etc.)
+   - **Category**: Select from dropdown (automatically sets Growth/Protection grouping)
+   - **Specialties**: Multi-select based on chosen category
+3. Submit the form
+4. New entry is added to the spreadsheet with `IsPublished: No`
+5. Admin reviews and changes `IsPublished` to `Yes` to make the expert visible
+
+**Note**: The TopLine (Growth/Protection) field is automatically assigned based on the selected category, as defined in the Expert Categories sheet.
+
+### Adding a New Expert (Manual)
 
 1. Open the Google Sheet
 2. Go to "Experts" tab
