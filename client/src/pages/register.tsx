@@ -132,6 +132,7 @@ export default function RegisterPage() {
                             <Input 
                               {...field} 
                               placeholder="John"
+                              required
                               data-testid="input-firstName"
                             />
                           </FormControl>
@@ -150,6 +151,7 @@ export default function RegisterPage() {
                             <Input 
                               {...field} 
                               placeholder="Smith"
+                              required
                               data-testid="input-lastName"
                             />
                           </FormControl>
@@ -170,6 +172,7 @@ export default function RegisterPage() {
                             {...field} 
                             type="email"
                             placeholder="john.smith@example.com"
+                            required
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -209,6 +212,7 @@ export default function RegisterPage() {
                             form.setValue("specialties", []);
                           }}
                           value={field.value}
+                          required
                         >
                           <FormControl>
                             <SelectTrigger data-testid="select-category">
