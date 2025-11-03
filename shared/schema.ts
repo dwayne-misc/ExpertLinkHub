@@ -21,5 +21,22 @@ export const contentSectionSchema = z.object({
   secondaryContent: z.string().optional(),
 });
 
+export const expertCategorySchema = z.object({
+  category: z.string(),
+  specialties: z.array(z.string()),
+  topLine: z.string(),
+});
+
+export const expertSubmissionSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Valid email is required"),
+  credentials: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  specialties: z.array(z.string()).min(1, "At least one specialty is required"),
+});
+
 export type Expert = z.infer<typeof expertSchema>;
 export type ContentSection = z.infer<typeof contentSectionSchema>;
+export type ExpertCategory = z.infer<typeof expertCategorySchema>;
+export type ExpertSubmission = z.infer<typeof expertSubmissionSchema>;

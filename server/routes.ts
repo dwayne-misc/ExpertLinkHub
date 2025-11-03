@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { fetchExpertsFromSheet, fetchContentSectionsFromSheet, updateContentSheet } from "./googleSheets";
+import { fetchExpertsFromSheet, fetchContentSectionsFromSheet, updateContentSheet, fetchExpertCategoriesFromSheet, appendExpertToSheet } from "./googleSheets";
 
 const SPREADSHEET_ID = "1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg";
 
@@ -60,6 +60,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error getting content sections:", error);
       res.status(500).json({ error: "Failed to fetch content sections" });
+    }
+  });
+
+  app.get("/api/categories", async (req, res) => {
+    try {
+      const categories = await fetchExpertCategoriesFromSheet(SPREADSHEET_ID);
+      res.json(categories);
+    } catch (error) {
+      console.error("Error getting categories:", error);
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  app.post("/api/submit-expert", async (req, res) => {
+    try {
+      const { firstName, lastName, email, credentials, category, specialties, topLine } = req.body;
+
+      if (!firstName || !lastName || !email || !category || !specialties || !topLine) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      await appendExpertToSheet(SPREADSHEET_ID, {
+        firstName,
+        lastName,
+        email,
+        credentials,
+        category,
+        specialties: Array.isArray(specialties) ? specialties : [specialties],
+        topLine
+      });
+
+      res.json({ success: true, message: "Expert submission successful" });
+    } catch (error) {
+      console.error("Error submitting expert:", error);
+      res.status(500).json({ error: "Failed to submit expert" });
     }
   });
 

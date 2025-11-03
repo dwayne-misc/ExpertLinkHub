@@ -58,6 +58,28 @@ export async function getUncachableGoogleSheetClient() {
   return google.sheets({ version: 'v4', auth: oauth2Client });
 }
 
+export async function getGoogleSheetClientWithWriteAccess() {
+  if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+    
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    });
+
+    return google.sheets({ version: 'v4', auth });
+  }
+
+  const accessToken = await getAccessToken();
+
+  const oauth2Client = new google.auth.OAuth2();
+  oauth2Client.setCredentials({
+    access_token: accessToken
+  });
+
+  return google.sheets({ version: 'v4', auth: oauth2Client });
+}
+
 export async function fetchExpertsFromSheet(spreadsheetId: string) {
   const sheets = await getUncachableGoogleSheetClient();
   
@@ -144,7 +166,7 @@ export async function fetchExpertCategoriesFromSheet(spreadsheetId: string) {
     
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'Expert Categories!A:B',
+      range: 'Expert Categories!A:C',
     });
 
     const rows = response.data.values;
@@ -155,12 +177,66 @@ export async function fetchExpertCategoriesFromSheet(spreadsheetId: string) {
 
     const [header, ...dataRows] = rows;
     
-    return dataRows.map(row => ({
-      category: row[0] || '',
-      specialty: row[1] || '',
-    })).filter(item => item.category || item.specialty);
+    const categoryMap = new Map<string, { specialties: Set<string>, topLine: string }>();
+
+    dataRows.forEach(row => {
+      const category = row[0]?.trim();
+      const specialty = row[1]?.trim();
+      const topLine = row[2]?.trim() || '';
+
+      if (category) {
+        if (!categoryMap.has(category)) {
+          categoryMap.set(category, { specialties: new Set(), topLine });
+        }
+        if (specialty) {
+          categoryMap.get(category)!.specialties.add(specialty);
+        }
+      }
+    });
+
+    return Array.from(categoryMap.entries()).map(([category, data]) => ({
+      category,
+      specialties: Array.from(data.specialties).sort(),
+      topLine: data.topLine
+    }));
   } catch (error) {
     console.log('Expert Categories sheet not found, skipping');
     return [];
   }
+}
+
+export async function appendExpertToSheet(spreadsheetId: string, expertData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  credentials?: string;
+  category: string;
+  specialties: string[];
+  topLine: string;
+}) {
+  const sheets = await getGoogleSheetClientWithWriteAccess();
+  
+  const specialtyString = expertData.specialties.join(', ');
+  
+  const newRow = [
+    expertData.firstName,
+    expertData.lastName,
+    expertData.credentials || '',
+    expertData.email,
+    '',
+    '',
+    expertData.category,
+    expertData.topLine,
+    specialtyString,
+    'No'
+  ];
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId,
+    range: 'Experts!A:J',
+    valueInputOption: 'RAW',
+    requestBody: {
+      values: [newRow]
+    }
+  });
 }

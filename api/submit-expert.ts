@@ -1,0 +1,115 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg';
+
+async function getAccessToken(): Promise<string> {
+  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!);
+  
+  const jwtHeader = { alg: 'RS256', typ: 'JWT' };
+  const now = Math.floor(Date.now() / 1000);
+  const jwtClaimSet = {
+    iss: credentials.client_email,
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+    aud: 'https://oauth2.googleapis.com/token',
+    exp: now + 3600,
+    iat: now
+  };
+
+  const base64url = (obj: any) => 
+    Buffer.from(JSON.stringify(obj))
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+
+  const headerAndPayload = `${base64url(jwtHeader)}.${base64url(jwtClaimSet)}`;
+  
+  const crypto = await import('crypto');
+  const sign = crypto.createSign('RSA-SHA256');
+  sign.update(headerAndPayload);
+  const signature = sign.sign(credentials.private_key, 'base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+
+  const jwt = `${headerAndPayload}.${signature}`;
+
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Token exchange failed: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.access_token;
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  try {
+    const { firstName, lastName, email, credentials, category, specialties, topLine } = req.body;
+
+    if (!firstName || !lastName || !email || !category || !specialties || !topLine) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const accessToken = await getAccessToken();
+    
+    const specialtyString = Array.isArray(specialties) ? specialties.join(', ') : specialties;
+    
+    const newRow = [
+      firstName,
+      lastName,
+      credentials || '',
+      email,
+      '',
+      '',
+      category,
+      topLine,
+      specialtyString,
+      'No'
+    ];
+
+    const range = 'Experts!A:J';
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        values: [newRow]
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Failed to append to sheet: ${response.status} ${error}`);
+    }
+
+    return res.status(200).json({ 
+      message: 'Expert submission successful',
+      success: true
+    });
+
+  } catch (error: any) {
+    console.error('Error submitting expert:', error);
+    return res.status(500).json({ 
+      message: 'Failed to submit expert',
+      error: error.message,
+      success: false
+    });
+  }
+}
