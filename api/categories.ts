@@ -101,11 +101,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     });
 
-    const categories = Array.from(categoryMap.entries()).map(([category, data]) => ({
-      category,
-      specialties: Array.from(data.specialties).sort(),
-      topLine: data.topLine
-    }));
+    const categories = Array.from(categoryMap.entries())
+      .map(([category, data]) => ({
+        category,
+        specialties: Array.from(data.specialties).sort(),
+        topLine: data.topLine
+      }))
+      .sort((a, b) => a.category.localeCompare(b.category));
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
     return res.status(200).json(categories);

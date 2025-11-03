@@ -197,11 +197,13 @@ export async function fetchExpertCategoriesFromSheet(spreadsheetId: string) {
       }
     });
 
-    return Array.from(categoryMap.entries()).map(([category, data]) => ({
-      category,
-      specialties: Array.from(data.specialties).sort(),
-      topLine: data.topLine
-    }));
+    return Array.from(categoryMap.entries())
+      .map(([category, data]) => ({
+        category,
+        specialties: Array.from(data.specialties).sort(),
+        topLine: data.topLine
+      }))
+      .sort((a, b) => a.category.localeCompare(b.category));
   } catch (error) {
     console.log('Expert Categories sheet not found, skipping');
     return [];
