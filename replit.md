@@ -191,6 +191,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
   - Alphabetized category dropdown in registration form using localeCompare()
   - Updated Expert Categories sheet documentation to reflect Column C (TopLine) usage
   - Added rewrites configuration to vercel.json to enable client-side routing (/register route now works)
+  - Fixed module resolution in api/submit-expert.ts by inlining schema validation (Vercel serverless compatibility)
 - **2025-11-03**: Added expert registration form at /register route
   - Cascading category and specialty dropdowns populated from Expert Categories sheet
   - Server-side validation using Zod schemas

@@ -1,6 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { z } from 'zod';
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg';
+
+const expertSubmissionSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Valid email is required"),
+  credentials: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  specialties: z.array(z.string()).min(1, "At least one specialty is required"),
+});
 
 async function getAccessToken(): Promise<string> {
   const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!);
@@ -57,8 +67,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { expertSubmissionSchema } = await import('../shared/schema');
-    
     const validationResult = expertSubmissionSchema.safeParse(req.body);
     
     if (!validationResult.success) {
