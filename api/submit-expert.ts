@@ -118,9 +118,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   } catch (error: any) {
     console.error('Error submitting expert:', error);
+    console.error('Error stack:', error.stack);
     return res.status(500).json({ 
       message: 'Failed to submit expert',
       error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       success: false
     });
   }
