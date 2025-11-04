@@ -81,14 +81,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json([]);
     }
 
-    const sections = rows.slice(1).map((row: string[]) => ({
+    interface ContentSection {
+      title: string;
+      content: string;
+      order: number;
+      type: string;
+      imageUrl: string;
+      secondaryContent: string;
+    }
+
+    const sections = rows.slice(1).map((row: string[]): ContentSection => ({
       title: row[0] || '',
       content: row[1] || '',
       order: parseInt(row[2] || '0', 10),
       type: row[3] || 'text',
       imageUrl: row[4] || '',
       secondaryContent: row[5] || ''
-    })).sort((a, b) => a.order - b.order);
+    })).sort((a: ContentSection, b: ContentSection) => a.order - b.order);
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
     return res.status(200).json(sections);

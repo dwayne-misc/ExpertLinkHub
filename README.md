@@ -15,7 +15,7 @@ A dynamic, single-page expert directory website that pulls data from Google Shee
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Dual Deployment**: Runs on both Replit (development) and Vercel (production)
 
-## 📊 Data Structure
+## 📊 Data Structure 
 
 ### Google Sheets Configuration
 

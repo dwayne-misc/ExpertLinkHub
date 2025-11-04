@@ -81,7 +81,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json([]);
     }
 
-    const experts = rows.slice(1).map((row: string[]) => ({
+    interface ExpertRow {
+      firstName: string;
+      lastName: string;
+      credentials: string;
+      email: string;
+      city: string;
+      state: string;
+      category: string;
+      group: string;
+      specialty: string;
+      isPublished: string;
+    }
+
+    const experts = rows.slice(1).map((row: string[]): ExpertRow => ({
       firstName: row[0] || '',
       lastName: row[1] || '',
       credentials: row[2] || '',
@@ -92,7 +105,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       group: row[7] || '',
       specialty: row[8] || '',
       isPublished: row[9] || ''
-    })).filter(expert => expert.isPublished.toLowerCase() === 'yes');
+    })).filter((expert: ExpertRow) => expert.isPublished.toLowerCase() === 'yes');
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
     return res.status(200).json(experts);

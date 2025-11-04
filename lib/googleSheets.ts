@@ -111,7 +111,20 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   }
 
   // Skip header row and map to expert objects
-  const experts = rows.slice(1).map((row: string[]) => ({
+  interface ExpertRow {
+    firstName: string;
+    lastName: string;
+    credentials: string;
+    email: string;
+    city: string;
+    state: string;
+    category: string;
+    group: string;
+    specialty: string;
+    isPublished: string;
+  }
+
+  const experts = rows.slice(1).map((row: string[]): ExpertRow => ({
     firstName: row[0] || '',
     lastName: row[1] || '',
     credentials: row[2] || '',
@@ -125,7 +138,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   }));
 
   // Filter only published experts
-  return experts.filter(expert => 
+  return experts.filter((expert: ExpertRow) => 
     expert.isPublished.toLowerCase() === 'yes'
   );
 }
@@ -162,7 +175,16 @@ export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
   }
 
   // Skip header row and map to content section objects
-  const sections = rows.slice(1).map((row: string[]) => ({
+  interface ContentSection {
+    title: string;
+    content: string;
+    order: number;
+    type: string;
+    imageUrl: string;
+    secondaryContent: string;
+  }
+
+  const sections = rows.slice(1).map((row: string[]): ContentSection => ({
     title: row[0] || '',
     content: row[1] || '',
     order: parseInt(row[2] || '0', 10),
@@ -172,5 +194,5 @@ export async function fetchContentSectionsFromSheet(spreadsheetId: string) {
   }));
 
   // Sort by order
-  return sections.sort((a, b) => a.order - b.order);
+  return sections.sort((a: ContentSection, b: ContentSection) => a.order - b.order);
 }
