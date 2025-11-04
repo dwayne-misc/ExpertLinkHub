@@ -186,10 +186,11 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
-- **2025-11-04**: Fixed TypeScript strict mode errors for Vercel deployment
+- **2025-11-04**: Fixed TypeScript strict mode errors and client-side routing for Vercel deployment
   - Added explicit type annotations (ContentSection, ExpertRow interfaces) in api/content.ts, api/experts.ts, lib/googleSheets.ts
   - Alphabetized category dropdown in registration form using localeCompare()
   - Updated Expert Categories sheet documentation to reflect Column C (TopLine) usage
+  - Added rewrites configuration to vercel.json to enable client-side routing (/register route now works)
 - **2025-11-03**: Added expert registration form at /register route
   - Cascading category and specialty dropdowns populated from Expert Categories sheet
   - Server-side validation using Zod schemas

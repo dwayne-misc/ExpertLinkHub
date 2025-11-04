@@ -9,6 +9,9 @@ The application is configured for Vercel's serverless platform:
 - **API Routes**: Serverless functions in `api/` directory
   - `/api/experts` - Fetches expert data from Google Sheets
   - `/api/content` - Fetches content sections from Google Sheets
+  - `/api/categories` - Fetches category/specialty options for registration form
+  - `/api/submit-expert` - Handles expert registration submissions
+- **Client-Side Routing**: All non-API routes are rewritten to `index.html` to enable React router (wouter) to handle routes like `/register`
 - **Data Caching**: Vercel's edge caching with 5-minute revalidation
 
 ## Prerequisites
