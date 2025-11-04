@@ -25,6 +25,14 @@ import {
 import { expertSubmissionSchema, type ExpertSubmission, type ExpertCategory } from "@shared/schema";
 import logoUrl from "@assets/vc_experts_logo.png";
 
+const US_STATES = [
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+];
+
 export default function RegisterPage() {
   const [submitted, setSubmitted] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -40,6 +48,8 @@ export default function RegisterPage() {
       lastName: "",
       email: "",
       credentials: "",
+      city: "",
+      state: "",
       category: "",
       specialties: [],
     },
@@ -180,6 +190,58 @@ export default function RegisterPage() {
                       </FormItem>
                     )}
                   />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="New York"
+                              data-testid="input-city"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger data-testid="select-state">
+                                <SelectValue placeholder="Select state" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {US_STATES.map((state) => (
+                                <SelectItem 
+                                  key={state} 
+                                  value={state}
+                                  data-testid={`option-state-${state}`}
+                                >
+                                  {state}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}

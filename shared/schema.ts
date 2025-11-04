@@ -32,6 +32,8 @@ export const expertSubmissionSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
   credentials: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
   category: z.string().min(1, "Category is required"),
   specialties: z.array(z.string()).min(1, "At least one specialty is required"),
 });

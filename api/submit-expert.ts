@@ -8,6 +8,8 @@ const expertSubmissionSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
   credentials: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
   category: z.string().min(1, "Category is required"),
   specialties: z.array(z.string()).min(1, "At least one specialty is required"),
 });
@@ -76,7 +78,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const { firstName, lastName, email, credentials, category, specialties } = validationResult.data;
+    const { firstName, lastName, email, credentials, city, state, category, specialties } = validationResult.data;
     const { topLine } = req.body;
 
     if (!topLine) {
@@ -92,8 +94,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lastName,
       credentials || '',
       email,
-      '',
-      '',
+      city || '',
+      state || '',
       category,
       topLine,
       specialtyString,
