@@ -86,7 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const { firstName, lastName, email, credentials, category, specialties } = validationResult.data;
+      const { firstName, lastName, email, url, credentials, city, state, category, specialties } = validationResult.data;
       const { topLine } = req.body;
 
       if (!topLine) {
@@ -97,7 +97,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName,
         lastName,
         email,
+        url,
         credentials,
+        city,
+        state,
         category,
         specialties,
         topLine

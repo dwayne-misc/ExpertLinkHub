@@ -188,13 +188,14 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 ## Recent Changes
 
 - **2025-11-04**: Enhanced registration form and expert display features
-  - Added URL field to registration form (optional, below email field)
-  - Added City and State fields to registration form (full state names in dropdown)
-  - Display globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
-  - Added note on listing page: "🌐 = Website available"
+  - Added URL field to registration form with automatic protocol normalization (https:// prepended if missing)
+  - Made City and State required fields in registration form (full state names in dropdown)
+  - Display smaller globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
+  - Added "🌐 = Website available" indicator on same line as expert count to save space
   - Removed "Submit another" button from thank you page
   - Added © ValuCompass (current year) footer to both home and register pages
   - Updated schema to include URL column (Column K in Experts sheet)
+  - URL normalization: accepts URLs with or without http://, stores all with https:// protocol in spreadsheet
 - **2025-11-04**: Fixed TypeScript strict mode errors and client-side routing for Vercel deployment
   - Added explicit type annotations (ContentSection, ExpertRow interfaces) in api/content.ts, api/experts.ts, lib/googleSheets.ts
   - Alphabetized category dropdown in registration form using localeCompare()

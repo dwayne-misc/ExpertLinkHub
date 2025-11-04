@@ -7,13 +7,27 @@ const expertSubmissionSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
-  url: z.string().url("Valid URL is required").optional().or(z.literal("")),
+  url: z.string().optional().or(z.literal("")),
   credentials: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
   category: z.string().min(1, "Category is required"),
   specialties: z.array(z.string()).min(1, "At least one specialty is required"),
 });
+
+function normalizeUrl(url: string | undefined): string {
+  if (!url || url.trim() === '') {
+    return '';
+  }
+  
+  const trimmedUrl = url.trim();
+  
+  if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+    return trimmedUrl;
+  }
+  
+  return `https://${trimmedUrl}`;
+}
 
 async function getAccessToken(): Promise<string> {
   const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!);
@@ -89,6 +103,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const accessToken = await getAccessToken();
     
     const specialtyString = Array.isArray(specialties) ? specialties.join(', ') : specialties;
+    const normalizedUrl = normalizeUrl(url);
     
     const newRow = [
       firstName,
@@ -101,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       topLine,
       specialtyString,
       'No',
-      url || ''
+      normalizedUrl
     ];
 
     const range = 'Experts!A:K';

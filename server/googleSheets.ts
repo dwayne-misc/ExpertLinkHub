@@ -215,7 +215,10 @@ export async function appendExpertToSheet(spreadsheetId: string, expertData: {
   firstName: string;
   lastName: string;
   email: string;
+  url?: string;
   credentials?: string;
+  city: string;
+  state: string;
   category: string;
   specialties: string[];
   topLine: string;
@@ -224,22 +227,37 @@ export async function appendExpertToSheet(spreadsheetId: string, expertData: {
   
   const specialtyString = expertData.specialties.join(', ');
   
+  const normalizeUrl = (url: string | undefined): string => {
+    if (!url || url.trim() === '') {
+      return '';
+    }
+    
+    const trimmedUrl = url.trim();
+    
+    if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+      return trimmedUrl;
+    }
+    
+    return `https://${trimmedUrl}`;
+  };
+  
   const newRow = [
     expertData.firstName,
     expertData.lastName,
     expertData.credentials || '',
     expertData.email,
-    '',
-    '',
+    expertData.city,
+    expertData.state,
     expertData.category,
     expertData.topLine,
     specialtyString,
-    'No'
+    'No',
+    normalizeUrl(expertData.url)
   ];
 
   await sheets.spreadsheets.values.append({
     spreadsheetId,
-    range: 'Experts!A:J',
+    range: 'Experts!A:K',
     valueInputOption: 'RAW',
     requestBody: {
       values: [newRow]
