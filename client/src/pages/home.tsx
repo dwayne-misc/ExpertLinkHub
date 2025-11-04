@@ -220,15 +220,17 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="text-center mb-6 space-y-1">
-          <p className="text-sm text-muted-foreground" data-testid="text-expert-count">
-            {filteredExperts.length > 0 
-              ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
-              : `0 of ${experts.length} experts`
-            }
-          </p>
-          <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-            <Globe className="w-3 h-3" /> = Website available
+        <div className="text-center mb-6">
+          <p className="text-sm text-muted-foreground flex items-center justify-center gap-3" data-testid="text-expert-count">
+            <span>
+              {filteredExperts.length > 0 
+                ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
+                : `0 of ${experts.length} experts`
+              }
+            </span>
+            <span className="text-xs flex items-center gap-1">
+              <Globe className="w-3 h-3" /> = Website available
+            </span>
           </p>
         </div>
 
@@ -271,11 +273,11 @@ export default function Home() {
                       href={expert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="absolute top-3 right-3 z-10 p-2 rounded-full bg-background hover:bg-accent transition-colors"
+                      className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-background hover:bg-accent transition-colors"
                       data-testid={`link-website-${index}`}
                       aria-label="Visit website"
                     >
-                      <Globe className="w-5 h-5 text-primary" />
+                      <Globe className="w-4 h-4 text-primary" />
                     </a>
                   )}
                   {expert.group && (
