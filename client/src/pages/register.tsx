@@ -330,7 +330,7 @@ export default function RegisterPage() {
                       name="specialties"
                       render={() => (
                         <FormItem>
-                          <FormLabel>Specialties * (Select at least one)</FormLabel>
+                          <FormLabel>Specialties * (Select 1-3)</FormLabel>
                           <div className="space-y-3 mt-2">
                             {availableSpecialties.map((specialty) => (
                               <FormField
@@ -338,6 +338,9 @@ export default function RegisterPage() {
                                 control={form.control}
                                 name="specialties"
                                 render={({ field }) => {
+                                  const isChecked = field.value?.includes(specialty);
+                                  const isDisabled = !isChecked && field.value?.length >= 3;
+                                  
                                   return (
                                     <FormItem
                                       key={specialty}
@@ -346,7 +349,8 @@ export default function RegisterPage() {
                                       <FormControl>
                                         <Checkbox
                                           data-testid={`checkbox-specialty-${specialty}`}
-                                          checked={field.value?.includes(specialty)}
+                                          checked={isChecked}
+                                          disabled={isDisabled}
                                           onCheckedChange={(checked) => {
                                             return checked
                                               ? field.onChange([...field.value, specialty])
@@ -358,7 +362,7 @@ export default function RegisterPage() {
                                           }}
                                         />
                                       </FormControl>
-                                      <FormLabel className="font-normal">
+                                      <FormLabel className={`font-normal ${isDisabled ? 'text-muted-foreground' : ''}`}>
                                         {specialty}
                                       </FormLabel>
                                     </FormItem>

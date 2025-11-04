@@ -12,7 +12,7 @@ const expertSubmissionSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   category: z.string().min(1, "Category is required"),
-  specialties: z.array(z.string()).min(1, "At least one specialty is required"),
+  specialties: z.array(z.string()).min(1, "Select 1-3 specialties").max(3, "Maximum 3 specialties allowed"),
 });
 
 function normalizeUrl(url: string | undefined): string {

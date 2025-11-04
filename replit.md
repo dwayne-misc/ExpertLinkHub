@@ -205,6 +205,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 - **2025-11-03**: Added expert registration form at /register route
   - Cascading category and specialty dropdowns populated from Expert Categories sheet
   - Server-side validation using Zod schemas
+  - Specialty selection limited to 1-3 choices (checkboxes disabled after 3 selected)
   - Automatic TopLine assignment based on category
   - New experts default to IsPublished="No" for review
   - Thank you message on successful submission
