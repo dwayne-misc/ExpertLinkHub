@@ -49,6 +49,7 @@ export default function RegisterPage() {
       firstName: "",
       lastName: "",
       email: "",
+      url: "",
       credentials: "",
       city: "",
       state: "",
@@ -93,29 +94,33 @@ export default function RegisterPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="max-w-2xl w-full p-8 text-center">
-          <div className="mb-6 flex justify-center">
-            <img src={logoUrl} alt="ValuCompass" className="h-12" />
+      <div className="min-h-screen bg-background flex flex-col">
+        <div className="flex-1 flex items-center justify-center p-4">
+          <Card className="max-w-2xl w-full p-8 text-center">
+            <div className="mb-6 flex justify-center">
+              <img src={logoUrl} alt="ValuCompass" className="h-12" />
+            </div>
+            <h1 className="text-3xl font-bold mb-4 text-foreground">Thank You!</h1>
+            <p className="text-lg text-muted-foreground">
+              Your application has been received. We will be in contact about being included in the ValuCompass Expert Directory.
+            </p>
+          </Card>
+        </div>
+
+        <footer className="w-full border-t bg-muted/30">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+            <p className="text-center text-sm text-muted-foreground">
+              © ValuCompass {new Date().getFullYear()}
+            </p>
           </div>
-          <h1 className="text-3xl font-bold mb-4 text-foreground">Thank You!</h1>
-          <p className="text-lg text-muted-foreground mb-6">
-            Your application has been received. We will be in contact about being included in the ValuCompass Expert Directory.
-          </p>
-          <Button 
-            onClick={() => setSubmitted(false)}
-            data-testid="button-submit-another"
-          >
-            Submit Another Application
-          </Button>
-        </Card>
+        </footer>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-12 px-4">
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="container mx-auto py-12 px-4 flex-1">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8 text-center">
             <img src={logoUrl} alt="ValuCompass" className="h-12 mx-auto mb-6" />
@@ -186,6 +191,25 @@ export default function RegisterPage() {
                             placeholder="john.smith@example.com"
                             required
                             data-testid="input-email"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Website</FormLabel>
+                        <FormControl>
+                          <Input 
+                            {...field} 
+                            type="url"
+                            placeholder="https://www.example.com"
+                            data-testid="input-url"
                           />
                         </FormControl>
                         <FormMessage />
@@ -371,6 +395,14 @@ export default function RegisterPage() {
           </Card>
         </div>
       </div>
+
+      <footer className="w-full border-t bg-muted/30 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+          <p className="text-center text-sm text-muted-foreground">
+            © ValuCompass {new Date().getFullYear()}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

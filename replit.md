@@ -64,7 +64,7 @@ Preferred communication style: Simple, everyday language.
 - Automatic cache refresh on 5-minute intervals
 - Fallback to cached data if Google Sheets API fails
 
-**Expert Data Schema** (Experts!A:J):
+**Expert Data Schema** (Experts!A:K):
 ```typescript
 {
   firstName: string
@@ -77,6 +77,7 @@ Preferred communication style: Simple, everyday language.
   group: string (TopLine field - Growth/Protection grouping)
   specialty: string (optional, expert specialty/focus area)
   isPublished: string (optional, "Yes" to show, "No" or empty to hide)
+  url: string (optional, expert's website URL)
 }
 ```
 
@@ -186,6 +187,14 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-11-04**: Enhanced registration form and expert display features
+  - Added URL field to registration form (optional, below email field)
+  - Added City and State fields to registration form (full state names in dropdown)
+  - Display globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
+  - Added note on listing page: "🌐 = Website available"
+  - Removed "Submit another" button from thank you page
+  - Added © ValuCompass (current year) footer to both home and register pages
+  - Updated schema to include URL column (Column K in Experts sheet)
 - **2025-11-04**: Fixed TypeScript strict mode errors and client-side routing for Vercel deployment
   - Added explicit type annotations (ContentSection, ExpertRow interfaces) in api/content.ts, api/experts.ts, lib/googleSheets.ts
   - Alphabetized category dropdown in registration form using localeCompare()

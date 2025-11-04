@@ -7,6 +7,7 @@ const expertSubmissionSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
+  url: z.string().url("Valid URL is required").optional().or(z.literal("")),
   credentials: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
@@ -78,7 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const { firstName, lastName, email, credentials, city, state, category, specialties } = validationResult.data;
+    const { firstName, lastName, email, url, credentials, city, state, category, specialties } = validationResult.data;
     const { topLine } = req.body;
 
     if (!topLine) {
@@ -99,13 +100,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       category,
       topLine,
       specialtyString,
-      'No'
+      'No',
+      url || ''
     ];
 
-    const range = 'Experts!A:J';
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW`;
+    const range = 'Experts!A:K';
+    const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW`;
 
-    const response = await fetch(url, {
+    const response = await fetch(appendUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,

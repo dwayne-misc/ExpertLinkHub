@@ -10,6 +10,7 @@ export const expertSchema = z.object({
   category: z.string(),
   group: z.string().optional(),
   specialty: z.string().optional(),
+  url: z.string().optional(),
 });
 
 export const contentSectionSchema = z.object({
@@ -31,6 +32,7 @@ export const expertSubmissionSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
+  url: z.string().url("Valid URL is required").optional().or(z.literal("")),
   credentials: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),

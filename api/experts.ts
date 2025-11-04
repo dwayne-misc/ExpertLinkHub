@@ -59,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const accessToken = await getAccessToken();
     
-    const range = 'Experts!A:J';
+    const range = 'Experts!A:K';
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}`;
 
     const response = await fetch(url, {
@@ -92,6 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       group: string;
       specialty: string;
       isPublished: string;
+      url: string;
     }
 
     const experts = rows.slice(1).map((row: string[]): ExpertRow => ({
@@ -104,7 +105,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       category: row[6] || '',
       group: row[7] || '',
       specialty: row[8] || '',
-      isPublished: row[9] || ''
+      isPublished: row[9] || '',
+      url: row[10] || ''
     })).filter((expert: ExpertRow) => expert.isPublished.toLowerCase() === 'yes');
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');

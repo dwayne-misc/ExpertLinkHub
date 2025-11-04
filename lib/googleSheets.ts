@@ -84,7 +84,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   const accessToken = await getAccessToken(credentials);
 
   // Fetch data using Google Sheets REST API
-  const range = 'Experts!A:J';
+  const range = 'Experts!A:K';
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`;
 
   console.log('[Sheets] Fetching data from:', url);
@@ -122,6 +122,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     group: string;
     specialty: string;
     isPublished: string;
+    url: string;
   }
 
   const experts = rows.slice(1).map((row: string[]): ExpertRow => ({
@@ -134,7 +135,8 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
     category: row[6] || '',
     group: row[7] || '',
     specialty: row[8] || '',
-    isPublished: row[9] || ''
+    isPublished: row[9] || '',
+    url: row[10] || ''
   }));
 
   // Filter only published experts

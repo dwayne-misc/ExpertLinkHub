@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Mail, ChevronLeft, ChevronRight, Copy } from "lucide-react";
+import { Search, Mail, ChevronLeft, ChevronRight, Copy, Globe } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -220,12 +220,15 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 space-y-1">
           <p className="text-sm text-muted-foreground" data-testid="text-expert-count">
             {filteredExperts.length > 0 
               ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
               : `0 of ${experts.length} experts`
             }
+          </p>
+          <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+            <Globe className="w-3 h-3" /> = Website available
           </p>
         </div>
 
@@ -263,6 +266,18 @@ export default function Home() {
                   className="hover-elevate transition-all duration-200 relative overflow-hidden"
                   data-testid={`card-expert-${index}`}
                 >
+                  {expert.url && (
+                    <a
+                      href={expert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute top-3 right-3 z-10 p-2 rounded-full bg-background hover:bg-accent transition-colors"
+                      data-testid={`link-website-${index}`}
+                      aria-label="Visit website"
+                    >
+                      <Globe className="w-5 h-5 text-primary" />
+                    </a>
+                  )}
                   {expert.group && (
                     <div 
                       className={`absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none`}
@@ -397,6 +412,14 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      <footer className="w-full border-t bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+          <p className="text-center text-sm text-muted-foreground">
+            © ValuCompass {new Date().getFullYear()}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
