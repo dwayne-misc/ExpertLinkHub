@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
 import { Search, Mail, ChevronLeft, ChevronRight, Copy, Globe } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -140,14 +139,14 @@ export default function Home() {
       <header className="border-b bg-background">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
           <div className="flex items-center justify-start">
-            <Link href="/" data-testid="link-logo">
+            <a href="/" data-testid="link-logo">
               <img 
                 src={logoUrl} 
                 alt="ValuCompass Experts" 
                 className="h-12 cursor-pointer"
                 data-testid="img-logo"
               />
-            </Link>
+            </a>
           </div>
         </div>
       </header>
