@@ -187,9 +187,10 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
-- **2025-11-05**: Updated branding assets
+- **2025-11-05**: Updated branding assets and form improvements
   - Replaced logo with new ValuCompass Experts logo featuring compass star icon
   - Logo updated on both home page and registration page
+  - Made logo on home page clickable to navigate to home/refresh page
   - Moved Credentials field to appear directly below First Name/Last Name on registration form
   - Clarified Website field is optional (no asterisk), accepts both formats: www.example.com and https://www.example.com
   - Backend automatically normalizes URLs to include https:// protocol when missing
