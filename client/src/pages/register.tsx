@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { expertSubmissionSchema, type ExpertSubmission, type ExpertCategory } from "@shared/schema";
-import logoUrl from "@assets/vc_experts_logo.png";
+import logoUrl from "@assets/ValuCompass-Experts-Logo-2_1762333845372.png";
 
 const US_STATES = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", 

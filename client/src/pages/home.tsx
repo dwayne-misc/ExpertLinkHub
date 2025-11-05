@@ -9,7 +9,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { ContentBlock } from "@/components/ContentBlock";
 import { useToast } from "@/hooks/use-toast";
 import type { Expert, ContentSection } from "@shared/schema";
-import logoUrl from "@assets/vc_experts_logo.png";
+import logoUrl from "@assets/ValuCompass-Experts-Logo-2_1762333845372.png";
 
 const EXPERTS_PER_PAGE = 6;
 

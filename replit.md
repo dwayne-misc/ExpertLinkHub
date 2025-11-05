@@ -14,7 +14,7 @@ Preferred communication style: Simple, everyday language.
 - Primary Color: #1F406F (deep blue - used for buttons, links, accents)
 - Primary Font: Montserrat (headings and body text)
 - Secondary Font: Lato (available for secondary content)
-- Logo: Sourced from https://discovervalucompass.github.io/experts/assets/images/vc_experts_logo.png
+- Logo: ValuCompass Experts logo with compass star icon (attached_assets/ValuCompass-Experts-Logo-2_1762333845372.png)
 
 ## System Architecture
 
@@ -187,6 +187,9 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-11-05**: Updated branding assets
+  - Replaced logo with new ValuCompass Experts logo featuring compass star icon
+  - Logo updated on both home page and registration page
 - **2025-11-04**: Enhanced registration form and expert display features
   - Added URL field to registration form with automatic protocol normalization (https:// prepended if missing)
   - Made City and State required fields in registration form (full state names in dropdown)
