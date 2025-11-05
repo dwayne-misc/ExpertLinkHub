@@ -225,8 +225,8 @@ export default function RegisterPage() {
                         <FormControl>
                           <Input 
                             {...field} 
-                            type="url"
-                            placeholder="https://www.example.com"
+                            type="text"
+                            placeholder="www.example.com or https://www.example.com"
                             data-testid="input-url"
                           />
                         </FormControl>

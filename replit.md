@@ -190,8 +190,11 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 - **2025-11-05**: Updated branding assets
   - Replaced logo with new ValuCompass Experts logo featuring compass star icon
   - Logo updated on both home page and registration page
+  - Moved Credentials field to appear directly below First Name/Last Name on registration form
+  - Clarified Website field is optional (no asterisk), accepts both formats: www.example.com and https://www.example.com
+  - Backend automatically normalizes URLs to include https:// protocol when missing
 - **2025-11-04**: Enhanced registration form and expert display features
-  - Added URL field to registration form with automatic protocol normalization (https:// prepended if missing)
+  - Added URL field to registration form with flexible format support (with or without http:// protocol)
   - Made City and State required fields in registration form (full state names in dropdown)
   - Display smaller globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
   - Added "🌐 = Website available" indicator on same line as expert count to save space
