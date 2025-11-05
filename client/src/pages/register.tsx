@@ -180,6 +180,24 @@ export default function RegisterPage() {
 
                   <FormField
                     control={form.control}
+                    name="credentials"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Credentials</FormLabel>
+                        <FormControl>
+                          <Input 
+                            {...field} 
+                            placeholder="CPA, CFP, JD, etc."
+                            data-testid="input-credentials"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -268,24 +286,6 @@ export default function RegisterPage() {
                       )}
                     />
                   </div>
-
-                  <FormField
-                    control={form.control}
-                    name="credentials"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Credentials</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="CPA, CFP, JD, etc."
-                            data-testid="input-credentials"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                   <FormField
                     control={form.control}
