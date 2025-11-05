@@ -223,7 +223,7 @@ export default function RegisterPage() {
                       name="city"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>City</FormLabel>
+                          <FormLabel>City *</FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
@@ -241,7 +241,7 @@ export default function RegisterPage() {
                       name="state"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>State</FormLabel>
+                          <FormLabel>State *</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             value={field.value}
