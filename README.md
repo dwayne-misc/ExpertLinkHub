@@ -5,11 +5,16 @@ A dynamic, single-page expert directory website that pulls data from Google Shee
 ## 🌟 Features
 
 - **Dynamic Expert Cards**: Displays professional profiles with credentials, location, category, and specialty
+- **Website Links**: Globe icon on expert cards links directly to their website (when provided)
 - **Smart Filtering**: Filter experts by category and Growth/Protection grouping
 - **Search Functionality**: Real-time search across names, credentials, and specialties
 - **Pagination**: Clean pagination system (6 experts per page) with smart page number display
 - **Visual Categorization**: Diagonal ribbon design distinguishing Growth vs. Protection experts
-- **Expert Registration Form**: Self-service registration at `/register` with cascading dropdowns
+- **Expert Registration Form**: Self-service registration at `/register` with:
+  - Cascading category/specialty dropdowns (1-3 specialty limit)
+  - Required City/State fields with full state names
+  - Flexible URL input (accepts with or without http://)
+  - Automatic TopLine (Growth/Protection) assignment
 - **Flexible CMS**: Contentful-style block system for managing page content directly in Google Sheets
 - **Auto-Refresh**: 5-minute cache with automatic updates when spreadsheet changes
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
@@ -25,7 +30,7 @@ The application reads from three tabs in the Google Spreadsheet:
 
 ---
 
-### 1. **Experts Sheet** (Range: `Experts!A:J`)
+### 1. **Experts Sheet** (Range: `Experts!A:K`)
 
 This is the primary data source for expert profiles.
 
@@ -35,17 +40,23 @@ This is the primary data source for expert profiles.
 | B | Last Name | Text | Yes | Expert's last name | `Smith` |
 | C | Credentials | Text | No | Professional credentials (CPA, CFP, etc.) | `CPA` |
 | D | Email | Email | Yes | Contact email address | `john@example.com` |
-| E | City | Text | No | City location | `Atlanta` |
-| F | State | Text | No | State abbreviation | `GA` |
+| E | City | Text | Yes | City location (full name) | `Atlanta` |
+| F | State | Text | Yes | State name (full name, not abbreviation) | `Georgia` |
 | G | Category | Text | Yes | Professional category (used for filtering) | `Accounting / Tax` |
 | H | TopLine (Group) | Text | Yes | Growth or Protection grouping | `Growth` or `Protection` |
 | I | Specialty | Text | No | Area of expertise (supports line breaks) | `Business Valuation` |
 | J | IsPublished | Text | Yes | Visibility control | `Yes` or `No` |
+| K | URL | URL | No | Expert's website URL (auto-normalized to https://) | `https://www.example.com` |
 
 **Important Notes:**
 - **IsPublished**: Only experts with `Yes` (case-insensitive) in this column will appear on the website
 - **TopLine/Group**: Must be either `Growth` or `Protection` - determines the diagonal ribbon color
 - **Specialty**: Supports multi-line text (use Alt+Enter in Google Sheets for line breaks)
+- **City & State**: Both required fields (full names, not abbreviations)
+- **URL**: Optional website URL - accepts both formats:
+  - `www.example.com` (auto-normalized to `https://www.example.com`)
+  - `https://www.example.com` (stored as-is)
+  - When URL exists, a globe icon appears on expert card linking to their website
 - **Category**: Used for filter buttons - common values include:
   - `Business Consulting`
   - `Financial Planner`
@@ -55,7 +66,7 @@ This is the primary data source for expert profiles.
   - `Wealth Management / AUM`
   - `Legal`
 
-**Header Row** (Row 1): `First Name | Last Name | Credentials | Email | City | State | Category | TopLine | Specialty | IsPublished`
+**Header Row** (Row 1): `First Name | Last Name | Credentials | Email | City | State | Category | TopLine | Specialty | IsPublished | URL`
 
 ---
 
@@ -342,10 +353,17 @@ The easiest way for new experts to join the directory is through the self-servic
 
 1. Navigate to `https://your-domain.com/register`
 2. Fill out the form:
-   - **Personal Information**: First name, last name, email
-   - **Credentials**: Optional (CPA, CFP, JD, etc.)
-   - **Category**: Select from dropdown (automatically sets Growth/Protection grouping)
-   - **Specialties**: Multi-select based on chosen category
+   - **First Name & Last Name** (required) - Expert's full name
+   - **Credentials** (optional) - Professional designations (CPA, CFP, JD, etc.)
+   - **Email** (required) - Contact email address
+   - **Website** (optional) - Expert's website URL
+     - Accepts both formats: `www.example.com` or `https://www.example.com`
+     - Automatically normalized to include `https://` protocol in database
+   - **City & State** (required) - Full city name and state name (not abbreviations)
+   - **Category** (required) - Select from dropdown (automatically sets Growth/Protection grouping)
+   - **Specialties** (required) - Select 1-3 specialties from checkboxes
+     - Checkboxes disable after 3 selections
+     - Must select at least 1, maximum 3
 3. Submit the form
 4. New entry is added to the spreadsheet with `IsPublished: No`
 5. Admin reviews and changes `IsPublished` to `Yes` to make the expert visible
@@ -357,10 +375,9 @@ The easiest way for new experts to join the directory is through the self-servic
 1. Open the Google Sheet
 2. Go to "Experts" tab
 3. Add a new row with all required fields:
-   - First Name, Last Name, Email (required)
-   - Category, TopLine/Group (required)
-   - Credentials, City, State, Specialty (optional)
-   - **IsPublished: `Yes`** (required to show on website)
+   - **Required**: First Name, Last Name, Email, City, State (full names), Category, TopLine/Group, IsPublished (`Yes`)
+   - **Optional**: Credentials, Specialty, URL
+   - **URL Format**: Can enter as `www.example.com` or `https://www.example.com` (both work)
 4. Wait up to 5 minutes for cache refresh, or restart the application
 
 ### Hiding an Expert
@@ -392,14 +409,18 @@ The easiest way for new experts to join the directory is through the self-servic
 - Primary Color: `#1F406F` (deep blue)
 - Primary Font: Montserrat
 - Secondary Font: Lato
-- Logo: Hosted at `https://discovervalucompass.github.io/experts/assets/images/vc_experts_logo.png`
+- Logo: ValuCompass Experts logo with compass star icon
+  - Displayed in header on all pages
+  - Clickable on home page (navigates to home/refreshes data)
 
 **Design Features:**
 - Card-based layout with consistent spacing
 - Diagonal ribbons for Growth (blue) / Protection (purple) categorization
+- Globe icon in upper right corner of cards when expert has website
 - Responsive grid (3→2→1 columns)
 - 6 experts per page with smart pagination
 - Material Design-inspired elevation and shadows
+- Footer with copyright notice on all pages
 
 ---
 
