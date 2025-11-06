@@ -13,6 +13,9 @@ const expertSubmissionSchema = z.object({
   state: z.string().min(1, "State is required"),
   category: z.string().min(1, "Category is required"),
   specialties: z.array(z.string()).min(1, "Select 1-3 specialties").max(3, "Maximum 3 specialties allowed"),
+  agreeToTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms and Conditions and Privacy Policy",
+  }),
 });
 
 function normalizeUrl(url: string | undefined): string {
@@ -93,17 +96,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const { firstName, lastName, email, url, credentials, city, state, category, specialties } = validationResult.data;
+    const { firstName, lastName, email, url, credentials, city, state, category, specialties, agreeToTerms } = validationResult.data;
     const { topLine } = req.body;
 
     if (!topLine) {
       return res.status(400).json({ message: 'TopLine is required' });
     }
 
+    if (!agreeToTerms) {
+      return res.status(400).json({ message: 'You must agree to the Terms and Conditions and Privacy Policy' });
+    }
+
     const accessToken = await getAccessToken();
     
     const specialtyString = Array.isArray(specialties) ? specialties.join(', ') : specialties;
     const normalizedUrl = normalizeUrl(url);
+    
+    const privacyDate = new Date().toISOString();
     
     const newRow = [
       firstName,
@@ -116,10 +125,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       topLine,
       specialtyString,
       'No',
-      normalizedUrl
+      normalizedUrl,
+      privacyDate
     ];
 
-    const range = 'Experts!A:K';
+    const range = 'Experts!A:L';
     const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW`;
 
     const response = await fetch(appendUrl, {
