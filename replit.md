@@ -64,20 +64,21 @@ Preferred communication style: Simple, everyday language.
 - Automatic cache refresh on 5-minute intervals
 - Fallback to cached data if Google Sheets API fails
 
-**Expert Data Schema** (Experts!A:K):
+**Expert Data Schema** (Experts!A:L):
 ```typescript
 {
   firstName: string
   lastName: string
   credentials: string (optional, e.g., CPA, CFP)
   email: string (validated)
-  city: string (optional)
-  state: string (optional)
+  city: string (required, full city name)
+  state: string (required, full state name not abbreviation)
   category: string (main filter categories, e.g., Tax, Legal)
   group: string (TopLine field - Growth/Protection grouping)
   specialty: string (optional, expert specialty/focus area)
   isPublished: string (optional, "Yes" to show, "No" or empty to hide)
-  url: string (optional, expert's website URL)
+  url: string (optional, expert's website URL, auto-normalized to https://)
+  privacyDate: string (optional, ISO timestamp when Terms/Privacy Policy accepted)
 }
 ```
 
@@ -187,10 +188,20 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-11-05**: Added required opt-in checkbox with Terms and Privacy Policy consent tracking
+  - Added required checkbox to registration form with specific legal copy
+  - Links to ValuCompass Terms and Conditions PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf)
+  - Links to ValuCompass Privacy Policy PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf)
+  - Added PrivacyDate column (L) to Experts sheet to capture submission timestamp
+  - Automatic timestamp capture in ISO format when form is submitted
+  - Frontend and backend validation ensures checkbox must be checked before submission
+  - Updated schema across frontend/backend to support agreeToTerms field and privacyDate storage
+  - Updated API endpoints (api/submit-expert.ts) and server methods (server/googleSheets.ts) to handle Column L
+  - Experts sheet range updated from A:K to A:L throughout application
 - **2025-11-05**: Updated branding assets and form improvements
   - Replaced logo with new ValuCompass Experts logo featuring compass star icon
   - Logo updated on both home page and registration page
-  - Made logo on home page clickable to navigate to home/refresh page
+  - Made logo on home page clickable via simple anchor tag (refreshes data when clicked)
   - Moved Credentials field to appear directly below First Name/Last Name on registration form
   - Clarified Website field is optional (no asterisk), accepts both formats: www.example.com and https://www.example.com
   - Backend automatically normalizes URLs to include https:// protocol when missing

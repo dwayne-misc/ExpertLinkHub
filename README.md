@@ -14,7 +14,9 @@ A dynamic, single-page expert directory website that pulls data from Google Shee
   - Cascading category/specialty dropdowns (1-3 specialty limit)
   - Required City/State fields with full state names
   - Flexible URL input (accepts with or without http://)
+  - Required opt-in checkbox with Terms and Conditions and Privacy Policy links
   - Automatic TopLine (Growth/Protection) assignment
+  - Timestamp capture upon submission (ISO format)
 - **Flexible CMS**: Contentful-style block system for managing page content directly in Google Sheets
 - **Auto-Refresh**: 5-minute cache with automatic updates when spreadsheet changes
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
@@ -30,7 +32,7 @@ The application reads from three tabs in the Google Spreadsheet:
 
 ---
 
-### 1. **Experts Sheet** (Range: `Experts!A:K`)
+### 1. **Experts Sheet** (Range: `Experts!A:L`)
 
 This is the primary data source for expert profiles.
 
@@ -47,6 +49,7 @@ This is the primary data source for expert profiles.
 | I | Specialty | Text | No | Area of expertise (supports line breaks) | `Business Valuation` |
 | J | IsPublished | Text | Yes | Visibility control | `Yes` or `No` |
 | K | URL | URL | No | Expert's website URL (auto-normalized to https://) | `https://www.example.com` |
+| L | PrivacyDate | DateTime | Auto | Timestamp when expert accepted Terms/Privacy Policy | `2025-11-05T20:15:30.000Z` |
 
 **Important Notes:**
 - **IsPublished**: Only experts with `Yes` (case-insensitive) in this column will appear on the website
@@ -57,6 +60,7 @@ This is the primary data source for expert profiles.
   - `www.example.com` (auto-normalized to `https://www.example.com`)
   - `https://www.example.com` (stored as-is)
   - When URL exists, a globe icon appears on expert card linking to their website
+- **PrivacyDate**: Automatically populated with ISO timestamp when expert submits registration form and accepts Terms/Privacy Policy
 - **Category**: Used for filter buttons - common values include:
   - `Business Consulting`
   - `Financial Planner`
@@ -66,7 +70,7 @@ This is the primary data source for expert profiles.
   - `Wealth Management / AUM`
   - `Legal`
 
-**Header Row** (Row 1): `First Name | Last Name | Credentials | Email | City | State | Category | TopLine | Specialty | IsPublished | URL`
+**Header Row** (Row 1): `First Name | Last Name | Credentials | Email | City | State | Category | TopLine | Specialty | IsPublished | URL | PrivacyDate`
 
 ---
 
@@ -364,8 +368,14 @@ The easiest way for new experts to join the directory is through the self-servic
    - **Specialties** (required) - Select 1-3 specialties from checkboxes
      - Checkboxes disable after 3 selections
      - Must select at least 1, maximum 3
+   - **Terms & Privacy Policy Agreement** (required) - Check to agree
+     - Links to ValuCompass Terms and Conditions PDF
+     - Links to ValuCompass Privacy Policy PDF
+     - Submission timestamp captured automatically upon acceptance
 3. Submit the form
-4. New entry is added to the spreadsheet with `IsPublished: No`
+4. New entry is added to the spreadsheet with:
+   - `IsPublished: No` (requires admin approval)
+   - `PrivacyDate` automatically populated with current date/time in ISO format
 5. Admin reviews and changes `IsPublished` to `Yes` to make the expert visible
 
 **Note**: The TopLine (Growth/Protection) field is automatically assigned based on the selected category, as defined in the Expert Categories sheet.
@@ -376,8 +386,9 @@ The easiest way for new experts to join the directory is through the self-servic
 2. Go to "Experts" tab
 3. Add a new row with all required fields:
    - **Required**: First Name, Last Name, Email, City, State (full names), Category, TopLine/Group, IsPublished (`Yes`)
-   - **Optional**: Credentials, Specialty, URL
+   - **Optional**: Credentials, Specialty, URL, PrivacyDate
    - **URL Format**: Can enter as `www.example.com` or `https://www.example.com` (both work)
+   - **PrivacyDate**: Leave blank for manual entries, or enter ISO timestamp if tracking consent date
 4. Wait up to 5 minutes for cache refresh, or restart the application
 
 ### Hiding an Expert
