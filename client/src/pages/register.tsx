@@ -382,19 +382,21 @@ export default function RegisterPage() {
                     control={form.control}
                     name="agreeToTerms"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-6 pb-2">
-                        <FormControl>
-                          <Checkbox
-                            data-testid="checkbox-agree-terms"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            className="mt-1"
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
+                      <FormItem className="flex flex-row items-start space-y-0 pt-6 pb-2">
+                        <div className="flex items-start gap-1">
+                          <FormControl>
+                            <Checkbox
+                              data-testid="checkbox-agree-terms"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="mt-1"
+                            />
+                          </FormControl>
+                          <span className="text-destructive text-sm mt-1">*</span>
+                        </div>
+                        <div className="space-y-1 leading-none ml-2">
                           <FormLabel className="text-sm font-normal leading-relaxed">
                             I agree to the{" "}
-                            <span className="text-destructive">*</span>{" "}
                             <a
                               href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
                               target="_blank"
