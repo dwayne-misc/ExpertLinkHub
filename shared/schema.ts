@@ -11,6 +11,7 @@ export const expertSchema = z.object({
   group: z.string().optional(),
   specialty: z.string().optional(),
   url: z.string().optional(),
+  privacyDate: z.string().optional(),
 });
 
 export const contentSectionSchema = z.object({
@@ -38,6 +39,9 @@ export const expertSubmissionSchema = z.object({
   state: z.string().min(1, "State is required"),
   category: z.string().min(1, "Category is required"),
   specialties: z.array(z.string()).min(1, "Select 1-3 specialties").max(3, "Maximum 3 specialties allowed"),
+  agreeToTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms and Conditions and Privacy Policy",
+  }),
 });
 
 export type Expert = z.infer<typeof expertSchema>;
