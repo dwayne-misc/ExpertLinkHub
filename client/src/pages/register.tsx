@@ -388,10 +388,11 @@ export default function RegisterPage() {
                             data-testid="checkbox-agree-terms"
                             checked={field.value}
                             onCheckedChange={field.onChange}
+                            className="mt-1"
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm font-normal">
+                          <FormLabel className="text-sm font-normal leading-relaxed">
                             I agree to the{" "}
                             <a
                               href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
