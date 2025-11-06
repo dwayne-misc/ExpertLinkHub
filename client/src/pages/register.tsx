@@ -392,7 +392,7 @@ export default function RegisterPage() {
                               className="mt-1"
                             />
                           </FormControl>
-                          <span className="absolute -top-1 -right-1 text-destructive">*</span>
+                          <span className="absolute -top-2 left-5 text-foreground text-sm">*</span>
                         </div>
                         <div className="space-y-1 leading-none">
                           <FormLabel className="text-sm font-normal leading-relaxed">
