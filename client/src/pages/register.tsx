@@ -55,6 +55,7 @@ export default function RegisterPage() {
       state: "",
       category: "",
       specialties: [],
+      agreeToTerms: false,
     },
   });
 
@@ -376,6 +377,50 @@ export default function RegisterPage() {
                       )}
                     />
                   )}
+
+                  <FormField
+                    control={form.control}
+                    name="agreeToTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-6 pb-2">
+                        <FormControl>
+                          <Checkbox
+                            data-testid="checkbox-agree-terms"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            I agree to the{" "}
+                            <a
+                              href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary underline hover:no-underline"
+                              data-testid="link-terms"
+                            >
+                              ValuCompass Terms and Conditions
+                            </a>{" "}
+                            and{" "}
+                            <a
+                              href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary underline hover:no-underline"
+                              data-testid="link-privacy"
+                            >
+                              ValuCompass Privacy Policy
+                            </a>
+                            .
+                            <br />
+                            We maintain Terms and Conditions and a Privacy Policy to protect both our users and our business by clearly outlining how our service works, what users can expect, and how we handle personal information in compliance with relevant laws. Data gathered in this assessment is protected by our Privacy Policy and will be available to your advisor(s) or ValuCompass for review. *
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
 
                   <div className="pt-4">
                     <Button
