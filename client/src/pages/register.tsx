@@ -382,8 +382,8 @@ export default function RegisterPage() {
                     control={form.control}
                     name="agreeToTerms"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-y-0 pt-6 pb-2">
-                        <div className="flex items-start gap-1">
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-6 pb-2">
+                        <div className="relative">
                           <FormControl>
                             <Checkbox
                               data-testid="checkbox-agree-terms"
@@ -392,9 +392,9 @@ export default function RegisterPage() {
                               className="mt-1"
                             />
                           </FormControl>
-                          <span className="text-destructive text-sm mt-1">*</span>
+                          <span className="absolute -top-1 -right-1 text-destructive">*</span>
                         </div>
-                        <div className="space-y-1 leading-none ml-2">
+                        <div className="space-y-1 leading-none">
                           <FormLabel className="text-sm font-normal leading-relaxed">
                             I agree to the{" "}
                             <a
