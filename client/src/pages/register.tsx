@@ -394,6 +394,7 @@ export default function RegisterPage() {
                         <div className="space-y-1 leading-none">
                           <FormLabel className="text-sm font-normal leading-relaxed">
                             I agree to the{" "}
+                            <span className="text-destructive">*</span>{" "}
                             <a
                               href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
                               target="_blank"
