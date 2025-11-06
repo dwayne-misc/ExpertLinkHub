@@ -189,7 +189,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 ## Recent Changes
 
 - **2025-11-05**: Added required opt-in checkbox with Terms and Privacy Policy consent tracking
-  - Added required checkbox to registration form with specific legal copy
+  - Added required checkbox to registration form with specific legal copy and line break spacing
   - Links to ValuCompass Terms and Conditions PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf)
   - Links to ValuCompass Privacy Policy PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf)
   - Added PrivacyDate column (L) to Experts sheet to capture submission timestamp
@@ -198,6 +198,8 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
   - Updated schema across frontend/backend to support agreeToTerms field and privacyDate storage
   - Updated API endpoints (api/submit-expert.ts) and server methods (server/googleSheets.ts) to handle Column L
   - Experts sheet range updated from A:K to A:L throughout application
+  - Added Terms and Conditions and Privacy Policy links to footer on both home and register pages
+  - Fixed checkbox alignment with mt-1 class and leading-relaxed for better readability
 - **2025-11-05**: Updated branding assets and form improvements
   - Replaced logo with new ValuCompass Experts logo featuring compass star icon
   - Logo updated on both home page and registration page

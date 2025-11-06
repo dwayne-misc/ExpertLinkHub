@@ -415,6 +415,7 @@ export default function RegisterPage() {
                             </a>
                             .
                             <br />
+                            <br />
                             We maintain Terms and Conditions and a Privacy Policy to protect both our users and our business by clearly outlining how our service works, what users can expect, and how we handle personal information in compliance with relevant laws. Data gathered in this assessment is protected by our Privacy Policy and will be available to your advisor(s) or ValuCompass for review. *
                           </FormLabel>
                           <FormMessage />
@@ -448,9 +449,32 @@ export default function RegisterPage() {
 
       <footer className="w-full border-t bg-muted/30 mt-auto">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-          <p className="text-center text-sm text-muted-foreground">
-            © ValuCompass {new Date().getFullYear()}
-          </p>
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+              <a
+                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline hover:no-underline"
+                data-testid="footer-link-terms"
+              >
+                Terms and Conditions
+              </a>
+              <span className="text-muted-foreground">|</span>
+              <a
+                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline hover:no-underline"
+                data-testid="footer-link-privacy"
+              >
+                Privacy Policy
+              </a>
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+              © ValuCompass {new Date().getFullYear()}
+            </p>
+          </div>
         </div>
       </footer>
     </div>
