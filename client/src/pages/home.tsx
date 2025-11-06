@@ -28,29 +28,16 @@ export default function Home() {
     queryKey: ["/api/content"],
   });
 
-  const categoriesByGroup = useMemo(() => {
-    const groups: Record<string, string[]> = {
-      Growth: [],
-      Protection: []
-    };
+  const allCategories = useMemo(() => {
+    const categories: string[] = [];
     
     experts.forEach(expert => {
-      if (expert.category) {
-        const group = expert.group || 'Other';
-        if (!groups[group]) {
-          groups[group] = [];
-        }
-        if (!groups[group].includes(expert.category)) {
-          groups[group].push(expert.category);
-        }
+      if (expert.category && !categories.includes(expert.category)) {
+        categories.push(expert.category);
       }
     });
     
-    Object.keys(groups).forEach(group => {
-      groups[group].sort();
-    });
-    
-    return groups;
+    return categories.sort();
   }, [experts]);
 
   const toggleCategory = (category: string) => {
@@ -194,30 +181,19 @@ export default function Home() {
               )}
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {Object.entries(categoriesByGroup).map(([group, categories]) => 
-                categories.length > 0 && (
-                  <div key={group} className="space-y-3">
-                    <h3 className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-                      {group}
-                    </h3>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {categories.map((category) => (
-                        <Button
-                          key={category}
-                          variant={selectedCategories.includes(category) ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleCategory(category)}
-                          className="rounded-full"
-                          data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
-                        >
-                          {category}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                )
-              )}
+            <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
+              {allCategories.map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategories.includes(category) ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => toggleCategory(category)}
+                  className="rounded-full"
+                  data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "-")}`}
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
@@ -281,26 +257,6 @@ export default function Home() {
                     >
                       <Globe className="w-4 h-4 text-primary" />
                     </a>
-                  )}
-                  {expert.group && (
-                    <div 
-                      className={`absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none`}
-                      data-testid={`label-group-container-${index}`}
-                    >
-                      <div 
-                        className={`absolute top-6 w-40 text-center py-1 text-[9px] font-bold tracking-widest transform rotate-45 shadow-md ${
-                          expert.group === 'Growth' 
-                            ? 'bg-emerald-500 text-white -right-8' 
-                            : 'bg-blue-500 text-white -right-10'
-                        }`}
-                        style={{
-                          fontFamily: 'Montserrat, sans-serif',
-                        }}
-                        data-testid={`label-group-${index}`}
-                      >
-                        {expert.group.toUpperCase()}
-                      </div>
-                    </div>
                   )}
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">

@@ -30,7 +30,7 @@ Preferred communication style: Simple, everyday language.
 **Design System**:
 - Card-based layout optimized for information density
 - Responsive grid system (1 column mobile, 2 columns tablet, 3 columns desktop)
-- Category filters displayed in side-by-side sections (Growth/Protection) on desktop, stacked on mobile
+- Category filters displayed as single collection of pills/badges in centered layout
 - Pagination system: 6 experts per page with smart page number display (ellipsis for 100+ pages)
 - Montserrat font family for primary typography (headings and body text)
 - Lato font family available for secondary content
@@ -188,6 +188,10 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 
 ## Recent Changes
 
+- **2025-11-06**: Simplified category filtering and removed Growth/Protection branding
+  - Removed Growth/Protection grouping - all categories now displayed in single collection
+  - Removed diagonal Growth/Protection ribbons/banners from expert cards
+  - Streamlined category filter display for cleaner user experience
 - **2025-11-05**: Added required opt-in checkbox with Terms and Privacy Policy consent tracking
   - Added required checkbox to registration form with specific legal copy and line break spacing
   - Links to ValuCompass Terms and Conditions PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf)
