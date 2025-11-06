@@ -85,7 +85,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
   
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range: 'Experts!A:K',
+    range: 'Experts!A:L',
   });
 
   const rows = response.data.values;
@@ -113,6 +113,7 @@ export async function fetchExpertsFromSheet(spreadsheetId: string) {
       group: row[7] || '',
       specialty: row[8] || '',
       url: row[10] || '',
+      privacyDate: row[11] || '',
     }));
 }
 
@@ -241,6 +242,8 @@ export async function appendExpertToSheet(spreadsheetId: string, expertData: {
     return `https://${trimmedUrl}`;
   };
   
+  const privacyDate = new Date().toISOString();
+  
   const newRow = [
     expertData.firstName,
     expertData.lastName,
@@ -252,12 +255,13 @@ export async function appendExpertToSheet(spreadsheetId: string, expertData: {
     expertData.topLine,
     specialtyString,
     'No',
-    normalizeUrl(expertData.url)
+    normalizeUrl(expertData.url),
+    privacyDate
   ];
 
   await sheets.spreadsheets.values.append({
     spreadsheetId,
-    range: 'Experts!A:K',
+    range: 'Experts!A:L',
     valueInputOption: 'RAW',
     requestBody: {
       values: [newRow]
