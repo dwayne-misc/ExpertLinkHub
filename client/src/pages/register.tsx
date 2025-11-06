@@ -452,31 +452,28 @@ export default function RegisterPage() {
 
       <footer className="w-full border-t bg-muted/30 mt-auto">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-              <a
-                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline hover:no-underline"
-                data-testid="footer-link-terms"
-              >
-                Terms and Conditions
-              </a>
-              <span className="text-muted-foreground">|</span>
-              <a
-                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline hover:no-underline"
-                data-testid="footer-link-privacy"
-              >
-                Privacy Policy
-              </a>
-            </div>
-            <p className="text-center text-sm text-muted-foreground">
-              © ValuCompass {new Date().getFullYear()}
-            </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+            <a
+              href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:no-underline"
+              data-testid="footer-link-terms"
+            >
+              Terms and Conditions
+            </a>
+            <span>|</span>
+            <a
+              href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:no-underline"
+              data-testid="footer-link-privacy"
+            >
+              Privacy Policy
+            </a>
+            <span>|</span>
+            <span>© ValuCompass {new Date().getFullYear()}</span>
           </div>
         </div>
       </footer>
