@@ -6,10 +6,9 @@ A dynamic, single-page expert directory website that pulls data from Google Shee
 
 - **Dynamic Expert Cards**: Displays professional profiles with credentials, location, category, and specialty
 - **Website Links**: Globe icon on expert cards links directly to their website (when provided)
-- **Smart Filtering**: Filter experts by category and Growth/Protection grouping
+- **Smart Filtering**: Filter experts by category with unified badge layout
 - **Search Functionality**: Real-time search across names, credentials, and specialties
 - **Pagination**: Clean pagination system (6 experts per page) with smart page number display
-- **Visual Categorization**: Diagonal ribbon design distinguishing Growth vs. Protection experts
 - **Expert Registration Form**: Self-service registration at `/register` with:
   - Cascading category/specialty dropdowns (1-3 specialty limit)
   - Required City/State fields with full state names
@@ -53,7 +52,7 @@ This is the primary data source for expert profiles.
 
 **Important Notes:**
 - **IsPublished**: Only experts with `Yes` (case-insensitive) in this column will appear on the website
-- **TopLine/Group**: Must be either `Growth` or `Protection` - determines the diagonal ribbon color
+- **TopLine/Group**: Must be either `Growth` or `Protection` - used for internal categorization only
 - **Specialty**: Supports multi-line text (use Alt+Enter in Google Sheets for line breaks)
 - **City & State**: Both required fields (full names, not abbreviations)
 - **URL**: Optional website URL - accepts both formats:
@@ -426,12 +425,13 @@ The easiest way for new experts to join the directory is through the self-servic
 
 **Design Features:**
 - Card-based layout with consistent spacing
-- Diagonal ribbons for Growth (blue) / Protection (purple) categorization
+- Clean, streamlined expert cards with minimal visual elements
 - Globe icon in upper right corner of cards when expert has website
+- Unified category filter badges in centered layout
 - Responsive grid (3→2→1 columns)
 - 6 experts per page with smart pagination
 - Material Design-inspired elevation and shadows
-- Footer with copyright notice on all pages
+- Footer with Terms, Privacy Policy, and copyright all on one line
 
 ---
 
@@ -439,15 +439,15 @@ The easiest way for new experts to join the directory is through the self-servic
 
 Based on current expert data, these categories are in use:
 
-- **Business Consulting** (Growth)
-- **Financial Planner** (Protection)
-- **Accounting / Tax** (Protection)
-- **Benefits / 401k** (Protection)
-- **Insurance / Protection** (Protection)
-- **Wealth Management / AUM** (Protection)
-- **Legal** (Protection)
+- Business Consulting
+- Financial Planner
+- Accounting / Tax
+- Benefits / 401k
+- Insurance / Protection
+- Wealth Management / AUM
+- Legal
 
-Categories are user-defined and can be customized directly in the spreadsheet.
+Categories are user-defined and can be customized directly in the spreadsheet. The TopLine field (Growth/Protection) is maintained for internal categorization but is not displayed visually on the site.
 
 ---
 

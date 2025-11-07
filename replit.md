@@ -192,6 +192,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
   - Removed Growth/Protection grouping - all categories now displayed in single collection
   - Removed diagonal Growth/Protection ribbons/banners from expert cards
   - Streamlined category filter display for cleaner user experience
+  - Updated footer to display all content on one line: "Terms and Conditions | Privacy Policy | © ValuCompass [year]"
 - **2025-11-05**: Added required opt-in checkbox with Terms and Privacy Policy consent tracking
   - Added required checkbox to registration form with specific legal copy and line break spacing
   - Links to ValuCompass Terms and Conditions PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf)
@@ -217,7 +218,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
   - Display smaller globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
   - Added "🌐 = Website available" indicator on same line as expert count to save space
   - Removed "Submit another" button from thank you page
-  - Added © ValuCompass (current year) footer to both home and register pages
+  - Added footer with copyright to both home and register pages
   - Updated schema to include URL column (Column K in Experts sheet)
   - URL normalization: accepts URLs with or without http://, stores all with https:// protocol in spreadsheet
 - **2025-11-04**: Fixed TypeScript strict mode errors and client-side routing for Vercel deployment
@@ -236,7 +237,7 @@ Uses Replit's built-in Google Sheets connector for authentication. No additional
 - **2025-11-01**: Created comprehensive README.md with complete field mappings and content type documentation
 - **2025-10-31**: Added IsPublished column (Column J) - experts only display when set to "Yes"
 - **2025-10-31**: Uniform card heights with reserved specialty area (3rem) for consistent layout
-- **2025-10-31**: Refined diagonal ribbon design with overflow effect and smaller 9px font
+- **2025-10-31**: (DEPRECATED - ribbons removed 2025-11-06) Refined diagonal ribbon design with overflow effect and smaller 9px font
 - **2025-10-31**: Replaced "Description" field with "Specialty" field for expert profiles
 - **2025-10-31**: Added Expert Categories reference tab documentation (Categories!A:B)
 - **2025-10-31**: Added support for line breaks in specialty text using `whitespace-pre-wrap` CSS
