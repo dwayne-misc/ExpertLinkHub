@@ -1,251 +1,55 @@
 # Expert Directory Application
 
 ## Overview
-
-This is an expert directory web application built to help users discover and connect with industry professionals across various categories including tax, legal, finance, and business consulting. The application features a searchable, filterable card-based interface that displays expert information pulled from Google Sheets, with a focus on utility and scannability.
+This project is an expert directory web application designed to connect users with industry professionals across various fields like tax, legal, finance, and business consulting. It features a searchable, filterable interface displaying expert information sourced from Google Sheets. The application aims for high utility and scannability, serving as a comprehensive platform for discovering and interacting with experts. The business vision is to provide a streamlined, efficient tool for professional networking and consultation discovery, with market potential in various professional services sectors.
 
 ## User Preferences
-
 Preferred communication style: Simple, everyday language.
-
-## Brand Customization
-
-**ValuCompass Branding:**
-- Primary Color: #1F406F (deep blue - used for buttons, links, accents)
-- Primary Font: Montserrat (headings and body text)
-- Secondary Font: Lato (available for secondary content)
-- Logo: ValuCompass Experts logo with compass star icon (attached_assets/ValuCompass-Experts-Logo-2_1762333845372.png)
 
 ## System Architecture
 
 ### Frontend Architecture
-
-**Framework**: React 18+ with TypeScript
-- **Routing**: Wouter for lightweight client-side routing
-- **State Management**: TanStack Query (React Query) v5 for server state management
-- **UI Components**: shadcn/ui component library (New York style variant)
-- **Styling**: Tailwind CSS with custom design tokens and Material Design-inspired approach
-- **Build Tool**: Vite for fast development and optimized production builds
-
-**Design System**:
-- Card-based layout optimized for information density
-- Responsive grid system (1 column mobile, 2 columns tablet, 3 columns desktop)
-- Category filters displayed as single collection of pills/badges in centered layout
-- Pagination system: 6 experts per page with smart page number display (ellipsis for 100+ pages)
-- Montserrat font family for primary typography (headings and body text)
-- Lato font family available for secondary content
-- Custom color system using HSL with CSS variables for theming support
-- Spacing based on Tailwind's 2/4/6/8 unit system
-- Content block system with 7 widget types for rich content composition
+The frontend is built with **React 18+ and TypeScript**, using **Wouter** for routing, and **TanStack Query v5** for server state management. **shadcn/ui** (New York style) provides UI components, styled with **Tailwind CSS** using custom design tokens and a Material Design approach. **Vite** is used for development and optimized builds. The design system emphasizes a card-based layout, responsive grid (1-3 columns), pill-based category filters, and pagination (6 experts per page). Typography uses **Montserrat** (primary) and **Lato** (secondary). A custom HSL color system with CSS variables supports theming, and spacing follows Tailwind's 2/4/6/8 unit system. A content block system supports 7 widget types for rich content composition below expert listings.
 
 ### Backend Architecture
-
-**Runtime**: Node.js with Express.js
-- **Language**: TypeScript compiled to ESM modules
-- **API Pattern**: RESTful endpoints serving JSON
-- **Data Validation**: Zod schemas for runtime type checking
-- **Build Process**: esbuild for production bundling
-
-**Server Structure**:
-- Express middleware for JSON parsing and request logging
-- Custom Vite integration for development with HMR
-- Modular route registration pattern
-- In-memory caching layer for performance optimization
+The backend uses **Node.js with Express.js** and **TypeScript** compiled to ESM. It implements **RESTful APIs** serving JSON, with **Zod** for data validation. **esbuild** handles production bundling. The server includes Express middleware for JSON parsing, request logging, and a modular route registration pattern. An in-memory caching layer is implemented for performance.
 
 ### Data Storage Solutions
+The primary data source is **Google Sheets**, integrated via API v4 with OAuth2 authentication using Replit Connectors. A 5-minute cache duration balances data freshness and API quotas. An in-memory caching strategy automatically refreshes data and provides a fallback if the Google Sheets API fails.
 
-**Primary Data Source**: Google Sheets integration
-- Real-time data fetching via Google Sheets API v4
-- OAuth2 authentication using Replit Connectors
-- 5-minute cache duration to balance freshness with API quota
+**Expert Data Schema (Experts!A:L)**:
+- `firstName`, `lastName`, `credentials` (optional), `email`, `city`, `state`, `category`, `group`, `specialty` (optional), `isPublished` ("Yes" to show), `url` (optional, auto-normalized to https://), `privacyDate` (ISO timestamp).
 
-**Caching Strategy**:
-- In-memory storage implementation (`MemStorage` class)
-- Automatic cache refresh on 5-minute intervals
-- Fallback to cached data if Google Sheets API fails
+**Expert Categories Reference (Expert Categories!A:B)**:
+- Lists category names and specialty options for validation.
 
-**Expert Data Schema** (Experts!A:L):
-```typescript
-{
-  firstName: string
-  lastName: string
-  credentials: string (optional, e.g., CPA, CFP)
-  email: string (validated)
-  city: string (required, full city name)
-  state: string (required, full state name not abbreviation)
-  category: string (main filter categories, e.g., Tax, Legal)
-  group: string (TopLine field - Growth/Protection grouping)
-  specialty: string (optional, expert specialty/focus area)
-  isPublished: string (optional, "Yes" to show, "No" or empty to hide)
-  url: string (optional, expert's website URL, auto-normalized to https://)
-  privacyDate: string (optional, ISO timestamp when Terms/Privacy Policy accepted)
-}
-```
-
-**Expert Categories Reference** (Expert Categories!A:B):
-- Optional reference tab listing available categories and specialties
-- Column A: Category name
-- Column B: Specialty options
-- Used for validation and reference when populating expert data
-
-**Content Management System**: Google Sheets-based block/widget system (Content!A:F)
-- **Content Schema**:
-```typescript
-{
-  title: string
-  content: string
-  order: number (controls display sequence)
-  type: string (widget type: text, image, hero, two-column, cards, image-text)
-  imageUrl: string (optional, for visual widgets)
-  secondaryContent: string (optional, for two-column layout)
-}
-```
-
-**Supported Widget Types**:
-1. **text**: Standard text content with optional title
-2. **image**: Full-width image with caption (title used as caption)
-3. **hero**: Large banner image (h-96) with overlaid title and content (dark gradient background)
-4. **two-column**: Side-by-side layout with content + secondaryContent (responsive, stacks on mobile)
-5. **cards**: Grid layout (3 cols desktop, 2 tablet, 1 mobile) - content split by double line breaks
-6. **image-text**: Image alongside text content in 2-column layout
-
-Content sections appear below expert listings, separated by divider, with 5-minute cache refresh.
+**Content Management System (Content!A:F)**:
+- Google Sheets-based with a schema including `title`, `content`, `order`, `type` (widget type), `imageUrl` (optional), `secondaryContent` (optional).
+- Supported widget types: `text`, `image`, `hero`, `two-column`, `cards`, `image-text`.
 
 ### Authentication and Authorization
+The application currently supports read-only access without user authentication. Authorization for Google Sheets access is handled via:
+- **Development (Replit)**: Replit's identity tokens and Google Sheets OAuth credentials through Replit Connectors.
+- **Production (Vercel/External)**: Google Service Account authentication with JSON credentials stored in `GOOGLE_SERVICE_ACCOUNT_JSON` environment variable, requiring `spreadsheets.readonly` scope.
 
-Currently implements read-only access with no user authentication. Authorization is handled at the infrastructure level through:
+## External Dependencies
 
-**Development (Replit)**:
-- Replit's identity tokens (REPL_IDENTITY for development, WEB_REPL_RENEWAL for deployment)
-- Google Sheets OAuth credentials managed via Replit Connectors
-- Connection settings cached to minimize auth overhead
+### Third-Party Services
+1.  **Google Sheets API**: Primary data source for expert listings and content blocks.
+    -   Spreadsheet ID: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`
+    -   Requires OAuth2 (Replit) or Service Account (Vercel/External) for `spreadsheets.readonly` access.
+2.  **Replit Platform Services**: Used for Google Sheets Connector API, development tooling, and identity tokens.
 
-**Production (Vercel/External)**:
-- Google Service Account authentication
-- Service account JSON credentials stored in environment variable `GOOGLE_SERVICE_ACCOUNT_JSON`
-- Read-only access to Google Sheets with `spreadsheets.readonly` scope
-- Service account email must be granted Viewer access to the spreadsheet
+### UI Component Libraries
+-   **Radix UI**: Primitives for accessible, unstyled components.
+-   **Lucide React**: For iconography.
 
-### External Dependencies
+### Styling & Utilities
+-   **Tailwind CSS v3** with PostCSS.
+-   **class-variance-authority**: For component variant management.
+-   **clsx & tailwind-merge**: For conditional class handling.
+-   **date-fns**: For date manipulation.
 
-**Third-Party Services**:
-1. **Google Sheets API**: Primary data source
-   - Spreadsheet ID: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`
-   - Experts!A:I: Expert directory data (9 columns)
-   - Content!A:F: Content management blocks/widgets (6 columns)
-   - Requires OAuth2 credentials via Replit Connectors
-   - Rate-limited through 5-minute caching strategy for both datasets
-
-2. **Replit Platform Services**:
-   - Connector API for Google Sheets authentication
-   - Development tooling (cartographer, dev banner, error overlay)
-   - Identity/renewal tokens for secure API access
-
-**UI Component Library**:
-- Radix UI primitives (20+ components) for accessible, unstyled components
-- Lucide React for iconography
-- Embla Carousel for potential carousel functionality
-- CMDK for command palette patterns
-
-**Styling & Utilities**:
-- Tailwind CSS v3 with PostCSS
-- class-variance-authority for component variant management
-- clsx & tailwind-merge for conditional class handling
-- date-fns for date manipulation
-
-**Developer Experience**:
-- TypeScript for type safety across frontend/backend
-- Drizzle ORM configured (PostgreSQL dialect) - note: database not currently in use but configured for future extension
-- ESBuild for fast production builds
-- TSX for TypeScript execution in development
-
-## Deployment
-
-The application supports deployment to multiple platforms with flexible authentication:
-
-### Vercel Deployment
-
-**Prerequisites**:
-- Google Service Account with JSON credentials
-- Service account email granted Viewer access to Google Sheet
-- Vercel account with connected Git repository
-
-**Environment Variables** (set in Vercel dashboard):
-- `GOOGLE_SERVICE_ACCOUNT_JSON`: Full service account JSON as single-line string
-- `SPREADSHEET_ID`: Google Sheets spreadsheet ID (default: `1kRomUELKC_iLfW5OQFG-78mc8r8jQ1qujDhINhdygEg`)
-- `SESSION_SECRET`: Random secret for session management (optional)
-
-**Build Configuration**:
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Install Command: `npm install`
-
-See `DEPLOYMENT.md` for detailed deployment instructions.
-
-### Replit Deployment
-
-Uses Replit's built-in Google Sheets connector for authentication. No additional environment variables required beyond the connector setup.
-
-## Recent Changes
-
-- **2025-11-06**: Simplified category filtering and removed Growth/Protection branding
-  - Removed Growth/Protection grouping - all categories now displayed in single collection
-  - Removed diagonal Growth/Protection ribbons/banners from expert cards
-  - Streamlined category filter display for cleaner user experience
-  - Updated footer to display all content on one line: "Terms and Conditions | Privacy Policy | © ValuCompass [year]"
-- **2025-11-05**: Added required opt-in checkbox with Terms and Privacy Policy consent tracking
-  - Added required checkbox to registration form with specific legal copy and line break spacing
-  - Links to ValuCompass Terms and Conditions PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf)
-  - Links to ValuCompass Privacy Policy PDF (https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf)
-  - Added PrivacyDate column (L) to Experts sheet to capture submission timestamp
-  - Automatic timestamp capture in ISO format when form is submitted
-  - Frontend and backend validation ensures checkbox must be checked before submission
-  - Updated schema across frontend/backend to support agreeToTerms field and privacyDate storage
-  - Updated API endpoints (api/submit-expert.ts) and server methods (server/googleSheets.ts) to handle Column L
-  - Experts sheet range updated from A:K to A:L throughout application
-  - Added Terms and Conditions and Privacy Policy links to footer on both home and register pages
-  - Fixed checkbox alignment with mt-1 class and leading-relaxed for better readability
-- **2025-11-05**: Updated branding assets and form improvements
-  - Replaced logo with new ValuCompass Experts logo featuring compass star icon
-  - Logo updated on both home page and registration page
-  - Made logo on home page clickable via simple anchor tag (refreshes data when clicked)
-  - Moved Credentials field to appear directly below First Name/Last Name on registration form
-  - Clarified Website field is optional (no asterisk), accepts both formats: www.example.com and https://www.example.com
-  - Backend automatically normalizes URLs to include https:// protocol when missing
-- **2025-11-04**: Enhanced registration form and expert display features
-  - Added URL field to registration form with flexible format support (with or without http:// protocol)
-  - Made City and State required fields in registration form (full state names in dropdown)
-  - Display smaller globe icon in upper right corner of expert cards when URL exists (links to website in new tab)
-  - Added "🌐 = Website available" indicator on same line as expert count to save space
-  - Removed "Submit another" button from thank you page
-  - Added footer with copyright to both home and register pages
-  - Updated schema to include URL column (Column K in Experts sheet)
-  - URL normalization: accepts URLs with or without http://, stores all with https:// protocol in spreadsheet
-- **2025-11-04**: Fixed TypeScript strict mode errors and client-side routing for Vercel deployment
-  - Added explicit type annotations (ContentSection, ExpertRow interfaces) in api/content.ts, api/experts.ts, lib/googleSheets.ts
-  - Alphabetized category dropdown in registration form using localeCompare()
-  - Updated Expert Categories sheet documentation to reflect Column C (TopLine) usage
-  - Added rewrites configuration to vercel.json to enable client-side routing (/register route now works)
-  - Fixed module resolution in api/submit-expert.ts by inlining schema validation (Vercel serverless compatibility)
-- **2025-11-03**: Added expert registration form at /register route
-  - Cascading category and specialty dropdowns populated from Expert Categories sheet
-  - Server-side validation using Zod schemas
-  - Specialty selection limited to 1-3 choices (checkboxes disabled after 3 selected)
-  - Automatic TopLine assignment based on category
-  - New experts default to IsPublished="No" for review
-  - Thank you message on successful submission
-- **2025-11-01**: Created comprehensive README.md with complete field mappings and content type documentation
-- **2025-10-31**: Added IsPublished column (Column J) - experts only display when set to "Yes"
-- **2025-10-31**: Uniform card heights with reserved specialty area (3rem) for consistent layout
-- **2025-10-31**: (DEPRECATED - ribbons removed 2025-11-06) Refined diagonal ribbon design with overflow effect and smaller 9px font
-- **2025-10-31**: Replaced "Description" field with "Specialty" field for expert profiles
-- **2025-10-31**: Added Expert Categories reference tab documentation (Categories!A:B)
-- **2025-10-31**: Added support for line breaks in specialty text using `whitespace-pre-wrap` CSS
-- **2025-10-31**: Dual authentication support (Replit Connectors + Google Service Account) for flexible deployment
-- **2025-10-31**: Added Vercel deployment configuration and documentation
-- **2025-10-31**: Replaced `googleapis` npm package with lightweight REST API calls for Vercel compatibility
-  - Fixes DNS_HOSTNAME_NOT_FOUND errors in serverless environment
-  - Reduces bundle size and improves cold start performance
-  - Uses direct Google Sheets REST API with JWT authentication
-  - Inlined authentication logic directly in API endpoints to avoid module resolution issues
-  - Successfully deployed to Vercel with Google Service Account authentication
+### Developer Experience
+-   **TypeScript**: For type safety.
+-   **ESBuild**: For fast production builds.
