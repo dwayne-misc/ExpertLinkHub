@@ -1,13 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Mail, ChevronLeft, ChevronRight, Copy, Globe } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ContentBlock } from "@/components/ContentBlock";
-import { useToast } from "@/hooks/use-toast";
 import type { Expert, ContentSection } from "@shared/schema";
 import logoUrl from "@assets/ValuCompass-Experts-Logo-2_1762333845372.png";
 
@@ -18,7 +17,6 @@ export default function Home() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
-  const { toast } = useToast();
 
   const { data: experts = [], isLoading } = useQuery<Expert[]>({
     queryKey: ["/api/experts"],
@@ -105,21 +103,6 @@ export default function Home() {
     return pages;
   };
 
-  const copyEmailToClipboard = async (email: string, expertName: string) => {
-    try {
-      await navigator.clipboard.writeText(email);
-      toast({
-        title: "Email copied!",
-        description: `${expertName}'s email has been copied to your clipboard.`,
-      });
-    } catch (err) {
-      toast({
-        title: "Failed to copy",
-        description: "Please try again or copy the email manually.",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -199,16 +182,11 @@ export default function Home() {
         </div>
 
         <div className="text-center mb-6">
-          <p className="text-sm text-muted-foreground flex items-center justify-center gap-3" data-testid="text-expert-count">
-            <span>
-              {filteredExperts.length > 0 
-                ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
-                : `0 of ${experts.length} experts`
-              }
-            </span>
-            <span className="text-xs flex items-center gap-1">
-              <Globe className="w-3 h-3" /> = Website available
-            </span>
+          <p className="text-sm text-muted-foreground" data-testid="text-expert-count">
+            {filteredExperts.length > 0 
+              ? `Showing ${(currentPage - 1) * EXPERTS_PER_PAGE + 1}-${Math.min(currentPage * EXPERTS_PER_PAGE, filteredExperts.length)} of ${filteredExperts.length} expert${filteredExperts.length !== 1 ? 's' : ''}`
+              : `0 of ${experts.length} experts`
+            }
           </p>
         </div>
 
@@ -246,18 +224,6 @@ export default function Home() {
                   className="hover-elevate transition-all duration-200 relative overflow-hidden"
                   data-testid={`card-expert-${index}`}
                 >
-                  {expert.url && (
-                    <a
-                      href={expert.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-background hover:bg-accent transition-colors"
-                      data-testid={`link-website-${index}`}
-                      aria-label="Visit website"
-                    >
-                      <Globe className="w-4 h-4 text-primary" />
-                    </a>
-                  )}
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">
                       <div className="space-y-2">
@@ -276,16 +242,18 @@ export default function Home() {
                           </p>
                         )}
 
-                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                          <Mail className="w-4 h-4" />
+                        {expert.url && (
                           <a
-                            href={`mailto:${expert.email}`}
-                            className="hover:text-primary transition-colors"
-                            data-testid={`link-email-${index}`}
+                            href={expert.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary hover:underline inline-flex items-center gap-1"
+                            data-testid={`link-website-${index}`}
                           >
-                            {expert.email}
+                            Visit Website
+                            <ExternalLink className="w-3 h-3" />
                           </a>
-                        </div>
+                        )}
                       </div>
 
                       <Badge
@@ -303,15 +271,6 @@ export default function Home() {
                           </p>
                         )}
                       </div>
-
-                      <Button
-                        className="w-full"
-                        onClick={() => copyEmailToClipboard(expert.email, `${expert.firstName} ${expert.lastName}`)}
-                        data-testid={`button-copy-email-${index}`}
-                      >
-                        <Copy className="w-4 h-4 mr-2" />
-                        Copy Email
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>

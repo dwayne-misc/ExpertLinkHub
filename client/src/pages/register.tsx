@@ -94,6 +94,8 @@ export default function RegisterPage() {
   const availableSpecialties = selectedCategoryData?.specialties || [];
 
   if (submitted) {
+    const rootUrl = window.location.origin;
+    
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <div className="flex-1 flex items-center justify-center p-4">
@@ -103,16 +105,52 @@ export default function RegisterPage() {
             </div>
             <h1 className="text-3xl font-bold mb-4 text-foreground">Thank You!</h1>
             <p className="text-lg text-muted-foreground">
-              Your application has been received. We will be in contact about being included in the ValuCompass Expert Directory.
+              Thank you for submitting your application. Go to{" "}
+              <a 
+                href={rootUrl} 
+                className="text-primary hover:underline"
+                data-testid="link-finder"
+              >
+                {rootUrl}
+              </a>
+              {" "}to view your entry under the expert category you selected. Contact{" "}
+              <a 
+                href="mailto:support@valucompass.com"
+                className="text-primary hover:underline"
+                data-testid="link-support"
+              >
+                support@valucompass.com
+              </a>
+              {" "}if you have any questions.
             </p>
           </Card>
         </div>
 
-        <footer className="w-full border-t bg-muted/30">
+        <footer className="w-full border-t bg-muted/30 mt-auto">
           <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-            <p className="text-center text-sm text-muted-foreground">
-              © ValuCompass {new Date().getFullYear()}
-            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+              <a
+                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Terms%20and%20Conditions%202024.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline hover:no-underline"
+                data-testid="footer-link-terms"
+              >
+                Terms and Conditions
+              </a>
+              <span>|</span>
+              <a
+                href="https://22381529.fs1.hubspotusercontent-na1.net/hubfs/22381529/ValuCompass%20Privacy%20Policy%202024.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline hover:no-underline"
+                data-testid="footer-link-privacy"
+              >
+                Privacy Policy
+              </a>
+              <span>|</span>
+              <span>© ValuCompass {new Date().getFullYear()}</span>
+            </div>
           </div>
         </footer>
       </div>
