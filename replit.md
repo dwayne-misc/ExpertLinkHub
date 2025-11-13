@@ -53,3 +53,14 @@ The application currently supports read-only access without user authentication.
 ### Developer Experience
 -   **TypeScript**: For type safety.
 -   **ESBuild**: For fast production builds.
+
+## Recent Changes
+
+- **2025-11-13**: Improved expert card display and registration thank you page
+  - Removed globe icon from upper right corner of expert cards
+  - Moved URL/website link to display under email as "Visit Website" with ExternalLink icon (opens in new tab)
+  - Email address remains displayed on cards (as plain text)
+  - Removed "Copy Email" button and all related copy-to-clipboard functionality
+  - Expert card display order (top to bottom): Name/Credentials → Location → Email → Visit Website link → Category badge → Specialty
+  - Updated registration thank you page to include dynamic link to root URL (finder) and support email link
+  - Thank you message now reads: "Thank you for submitting your application. Go to [root URL] to view your entry under the expert category you selected. Contact support@valucompass.com if you have any questions."

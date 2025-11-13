@@ -242,6 +242,12 @@ export default function Home() {
                           </p>
                         )}
 
+                        {expert.email && (
+                          <p className="text-sm text-muted-foreground" data-testid={`text-email-${index}`}>
+                            {expert.email}
+                          </p>
+                        )}
+
                         {expert.url && (
                           <a
                             href={expert.url}
