@@ -120,12 +120,9 @@ export default function Home() {
           </div>
         </div>
       </header>
-
       <main className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="py-12 md:py-16 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Expert Directory
-          </h1>
+          <h1 className="text-4xl font-bold text-foreground mb-4">Experts Directory</h1>
           <h2 className="text-2xl font-semibold text-foreground mb-4 max-w-3xl mx-auto">
             Unlock the right expertise, right when you need it.
           </h2>
@@ -337,7 +334,6 @@ export default function Home() {
           </div>
         )}
       </main>
-
       <footer className="w-full border-t bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
