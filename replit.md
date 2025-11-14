@@ -54,8 +54,36 @@ The application currently supports read-only access without user authentication.
 -   **TypeScript**: For type safety.
 -   **ESBuild**: For fast production builds.
 
+## Color System (WCAG Compliant)
+
+The application uses a carefully designed color palette that meets WCAG AAA accessibility standards:
+
+**Primary Palette:**
+- **Primary**: #1F406F (HSL: 215 56% 28%) - Deep blue for buttons, links, and primary accents
+- **Dark Neutral Text**: #2F3136 (HSL: 224 7% 20%) - Main foreground text color
+- **Secondary Text**: #3A3A3A (HSL: 0 0% 23%) - Muted/secondary text (muted-foreground)
+- **Light Background**: #F8F9FB (HSL: 220 33% 98%) - Main page background
+- **Card Background**: #FAFAFA (HSL: 0 0% 98%) - Card and panel backgrounds
+- **Badge Background**: #E5ECF5 (HSL: 214 40% 93%) - Light blue background for category badges
+- **Badge Text/Border**: #1F406F (primary color) - Text and border for badges
+
+**Contrast Ratios (WCAG AAA Compliant):**
+- Primary text on light background: ≈ 9:1
+- Primary text on badge background: ≈ 8.7:1
+- Secondary text on background: ≈ 10:1
+
+All contrast ratios exceed WCAG AA standards (4.5:1 for normal text, 3:1 for large text) and meet AAA standards where applicable.
+
 ## Recent Changes
 
+- **2025-11-14**: Updated color system for WCAG compliance
+  - Implemented new color palette with verified WCAG AAA contrast ratios
+  - Updated all CSS variables in index.css for light mode
+  - Primary color: #1F406F (deep blue) used throughout for consistency
+  - Badge styling: light blue background (#E5ECF5) with primary text (#1F406F)
+  - Background colors: #F8F9FB (page) and #FAFAFA (cards) for subtle contrast
+  - Text colors: #2F3136 (primary) and #3A3A3A (secondary) for optimal readability
+  - All changes tested and verified for visual consistency and accessibility
 - **2025-11-13**: Improved expert card display and registration thank you page
   - Removed globe icon from upper right corner of expert cards
   - Moved URL/website link to display under email as "Visit Website" with ExternalLink icon (opens in new tab)
