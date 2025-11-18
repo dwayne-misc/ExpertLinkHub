@@ -76,6 +76,11 @@ All contrast ratios exceed WCAG AA standards (4.5:1 for normal text, 3:1 for lar
 
 ## Recent Changes
 
+- **2025-11-14**: Set IsPublished flag to default to "Yes" on form submission
+  - Updated both submission handlers (api/submit-expert.ts and server/googleSheets.ts) to set IsPublished="Yes" in column J
+  - New expert submissions are now immediately visible in the directory without manual approval
+  - Implemented cache invalidation in development environment to ensure new experts appear immediately after submission
+  - Note: Production (Vercel) uses serverless functions with stateless execution, so caching behavior differs from development
 - **2025-11-14**: Updated color system for WCAG compliance
   - Implemented new color palette with verified WCAG AAA contrast ratios
   - Updated all CSS variables in index.css for light mode
