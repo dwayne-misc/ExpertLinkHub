@@ -254,7 +254,7 @@ export async function appendExpertToSheet(spreadsheetId: string, expertData: {
     expertData.category,
     expertData.topLine,
     specialtyString,
-    'No',
+    'Yes',
     normalizeUrl(expertData.url),
     privacyDate
   ];

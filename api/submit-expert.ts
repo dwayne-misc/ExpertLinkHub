@@ -124,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       category,
       topLine,
       specialtyString,
-      'No',
+      'Yes',
       normalizedUrl,
       privacyDate
     ];
