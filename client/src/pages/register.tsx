@@ -94,8 +94,6 @@ export default function RegisterPage() {
   const availableSpecialties = selectedCategoryData?.specialties || [];
 
   if (submitted) {
-    const rootUrl = window.location.origin;
-    
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <div className="flex-1 flex items-center justify-center p-4">
@@ -105,15 +103,15 @@ export default function RegisterPage() {
             </div>
             <h1 className="text-3xl font-bold mb-4 text-foreground">Thank You!</h1>
             <p className="text-lg text-muted-foreground">
-              Thank you for submitting your application. Go to{" "}
+              Thank you for joining. Visit{" "}
               <a 
-                href={rootUrl} 
+                href="https://expert.valucompass.com" 
                 className="text-primary hover:underline"
                 data-testid="link-finder"
               >
-                {rootUrl}
+                https://expert.valucompass.com
               </a>
-              {" "}to view your entry under the expert category you selected. Contact{" "}
+              {" "}to view your entry under the category you selected. For any questions, contact{" "}
               <a 
                 href="mailto:support@valucompass.com"
                 className="text-primary hover:underline"
@@ -121,7 +119,7 @@ export default function RegisterPage() {
               >
                 support@valucompass.com
               </a>
-              {" "}if you have any questions.
+              .
             </p>
           </Card>
         </div>

@@ -89,11 +89,12 @@ All contrast ratios exceed WCAG AA standards (4.5:1 for normal text, 3:1 for lar
   - Background colors: #F8F9FB (page) and #FAFAFA (cards) for subtle contrast
   - Text colors: #2F3136 (primary) and #3A3A3A (secondary) for optimal readability
   - All changes tested and verified for visual consistency and accessibility
+- **2025-11-14**: Updated registration thank you page copy
+  - Changed thank you message to: "Thank you for joining. Visit https://expert.valucompass.com to view your entry under the category you selected. For any questions, contact support@valucompass.com."
+  - Replaced dynamic root URL with fixed production URL: https://expert.valucompass.com
 - **2025-11-13**: Improved expert card display and registration thank you page
   - Removed globe icon from upper right corner of expert cards
   - Moved URL/website link to display under email as "Visit Website" with ExternalLink icon (opens in new tab)
   - Email address remains displayed on cards (as plain text)
   - Removed "Copy Email" button and all related copy-to-clipboard functionality
   - Expert card display order (top to bottom): Name/Credentials → Location → Email → Visit Website link → Category badge → Specialty
-  - Updated registration thank you page to include dynamic link to root URL (finder) and support email link
-  - Thank you message now reads: "Thank you for submitting your application. Go to [root URL] to view your entry under the expert category you selected. Contact support@valucompass.com if you have any questions."
