@@ -106,6 +106,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         topLine
       });
 
+      expertsCacheTime = 0;
+      await refreshExpertsCache();
+
       console.log(`Successfully added new expert: ${firstName} ${lastName} (${category})`);
       res.json({ success: true, message: "Expert submission successful" });
     } catch (error) {
