@@ -76,6 +76,9 @@ All contrast ratios exceed WCAG AA standards (4.5:1 for normal text, 3:1 for lar
 
 ## Recent Changes
 
+- **2025-11-14**: Added HTTP to HTTPS redirect in vercel.json
+  - Configured permanent redirect from http://expert.valucompass.com to https://expert.valucompass.com
+  - Ensures all traffic uses secure HTTPS connections
 - **2025-11-14**: Set IsPublished flag to default to "Yes" on form submission
   - Updated both submission handlers (api/submit-expert.ts and server/googleSheets.ts) to set IsPublished="Yes" in column J
   - New expert submissions are now immediately visible in the directory without manual approval
